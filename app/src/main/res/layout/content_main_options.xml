@@ -7,6 +7,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_main_options" tools:context=".MainOptionsActivity" >
+    tools:showIn="@layout/app_bar_main_options" tools:context=".MainOptionsActivity"
+    android:weightSum="1">
 
+    <RadioGroup
+        android:layout_width="226dp"
+        android:layout_height="83dp"
+        android:id="@+id/rgOption"
+        android:showDividers="beginning|end"
+        android:visibility="visible"
+        android:layout_marginTop="50dp"
+        android:layout_weight="0.17">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Previous Q Papers"
+            android:id="@+id/rbPQP"
+            android:layout_marginLeft="16dp"
+            android:textSize="20dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prepare for Exam"
+            android:id="@+id/rbpfE"
+            android:layout_marginLeft="16dp"
+            android:textSize="20dp"
+            android:layout_marginTop="16dp" />
+    </RadioGroup>
 </LinearLayout>
