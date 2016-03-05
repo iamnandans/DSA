@@ -45,6 +45,8 @@ public class MainOptionsActivity extends AppCompatActivity
 
         dbHelper = new DBHelper(this);
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+
     }
 
     @Override
