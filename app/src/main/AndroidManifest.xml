@@ -18,6 +18,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".chapters"
+            android:label="@string/title_activity_chapters"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="com.pivot.dsa.chapters" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".questions"
+            android:label="@string/title_activity_questions"
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <intent-filter>
+                <action android:name="com.pivot.dsa.questions" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

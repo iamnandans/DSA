@@ -53,7 +53,7 @@ public class DBChapters {
         return subjects;
     }
 
-    public boolean createDTBData(SQLiteDatabase db) {
+    public boolean createTBnData(SQLiteDatabase db) {
         db.execSQL(CREATE_CHAPTERS_TABLE);
         db.execSQL(getAllChapters());
         return true;

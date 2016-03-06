@@ -1,5 +1,7 @@
 package com.pivot.dsa;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,13 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainOptionsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_options);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,9 +51,30 @@ public class MainOptionsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dbHelper = new DBHelper(this);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        DBSubjects subjects = new DBSubjects();
+        //SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        Cursor cursor = dbHelper.getAllSubjects();
+        int count=0;
+        String [] subjectName = {"subject1", "subject2", "subject3", "subject4", "subject4"};
 
+        /*
+        while (cursor.moveToNext()) {
+            //int subID = cursor.getInt(cursor.getColumnIndex(subjects.getUID()));
+            String subName = cursor.getString(cursor.getColumnIndex(subjects.getSUB_NAME()));
+            //int subLevel = cursor.getInt(cursor.getColumnIndex(subjects.getLEVEL()));
+            //buffer.append(subID + "," + subName + "," + subLevel + "--");
+            subjectName[count++] = subName;
+        }
+        */
 
+        ListView listView;
+        listView = (ListView) findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, subjectName);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(this);
+
+        //Message.message(this,subjectsTB);
     }
 
     @Override
@@ -104,5 +132,13 @@ public class MainOptionsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView textView = (TextView) view;
+        Intent intent = new Intent("com.pivot.dsa.chapters");
+        startActivity(intent);
+        //Message.message(this, textView.getText().toString());
     }
 }
