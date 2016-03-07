@@ -60,6 +60,7 @@ public class DBSubjects {
 
     public boolean createTBnData(SQLiteDatabase db) {
         db.execSQL(CREATE_SUB_TABLE);
+
         StringBuffer subjects = new StringBuffer();
         subjects.append("insert into " + SUBJECTS_TB + " values(1, 'subject1',1);") ;
         db.execSQL(subjects.toString());

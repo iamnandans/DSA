@@ -13,10 +13,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DB_NAME = "DSA";
-    private static final int DB_VERSION = 23;
+    private static final int DB_VERSION = 28;
     private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
+    DBQuestions questions ;
+    DBDiagram diagram;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -25,6 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         subjects = new DBSubjects();
         chapters = new DBChapters();
+        questions = new DBQuestions();
+        diagram = new DBDiagram();
         gDB = getWritableDatabase();
     }
 
@@ -34,6 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             subjects.createTBnData(db);
             chapters.createTBnData(db);
+            questions.createTBnData(db);
+            diagram.createTBnData(db);
+
         } catch (SQLException e) {
             Message.message(context, "" + e);
         }
@@ -46,6 +53,8 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.execSQL(subjects.getDropSubTable());
             db.execSQL(chapters.getDropChaptersTable());
+            db.execSQL(questions.getDropQuesionsTable());
+            db.execSQL(diagram.getDropDiagramTable());
             onCreate(db);
         } catch (SQLException e) {
             Message.message(context, "" + e);
