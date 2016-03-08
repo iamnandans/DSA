@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
             android:title="Import" />
@@ -20,5 +21,27 @@
                 android:title="Send" />
         </menu>
     </item>
+-->
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_pQPaper"
+            android:title="Previous Ques Paper" />
+        <item android:id="@+id/nav_takeTest"
+            android:title="Take Test" />
+        <item android:id="@+id/nav_syncDate"
+            android:title="Sync Data" />
+        <item android:id="@+id/nav_favourite"
+            android:title="List Favourite Questions" />
+        <item android:id="@+id/nav_settings"
+            android:title="Settings" />
+    </group>
 
+
+    <item android:title="Communicate">
+        <menu>
+            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
+                android:title="Share" />
+            <item android:id="@+id/nav_rateUS"
+                android:title="Rate Us" />
+        </menu>
+    </item>
 </menu>

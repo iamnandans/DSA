@@ -24,9 +24,10 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="com.pivot.dsa.chapters" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainOptionsActivity" />
         </activity>
         <activity
             android:name=".questions"
@@ -35,9 +36,9 @@
 
             <intent-filter>
                 <action android:name="com.pivot.dsa.questions" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.pivot.dsa.chapters" />
         </activity>
     </application>
 
