@@ -27,20 +27,22 @@
             android:title="Previous Ques Paper" />
         <item android:id="@+id/nav_takeTest"
             android:title="Take Test" />
-        <item android:id="@+id/nav_syncDate"
+        <item android:id="@+id/nav_syncDate" android:icon="@mipmap/ic_sync_data"
             android:title="Sync Data" />
         <item android:id="@+id/nav_favourite"
             android:title="List Favourite Questions" />
-        <item android:id="@+id/nav_settings"
-            android:title="Settings" />
     </group>
 
+            <item android:id="@+id/nav_settings"
+                android:title="Settings" />
+            <item android:id="@+id/nav_upgrade"
+                android:title="Upgrade" />
 
     <item android:title="Communicate">
         <menu>
             <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
                 android:title="Share" />
-            <item android:id="@+id/nav_rateUS"
+            <item android:id="@+id/nav_rateUS" android:icon="@mipmap/ic_filled_star"
                 android:title="Rate Us" />
         </menu>
     </item>
