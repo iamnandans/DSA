@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:gravity="center_vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="A) "
+        android:id="@+id/optionNo"
+        android:textSize="30dp"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="this is option#1"
+        android:id="@+id/optionValue"
+        android:textSize="25dp"
+        android:paddingLeft="10dp" />
+</LinearLayout>

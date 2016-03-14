@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,10 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class questions extends AppCompatActivity {
 
     ViewPager viewPager;
     TabLayout mTabLayout;
+    private static RecyclerView recyclerView;
+    private static questionsAdapter qAdapter;
 
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
 
@@ -71,7 +78,7 @@ public class questions extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
 
         public DemoCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -94,23 +101,47 @@ public class questions extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "OBJECT " + (position + 1);
+            return "Ques " + (position + 1);
         }
     }
 
 
-    public static class DemoObjectFragment extends Fragment {
+    public static class  DemoObjectFragment extends Fragment {
 
-        public static final String ARG_OBJECT = "object";
+        public static final String ARG_OBJECT = "Question No ";
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            int questionNo=0;
             View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
+            recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
+
+            qAdapter = new questionsAdapter(getActivity(),getData());
+            recyclerView.setAdapter(qAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
             Bundle args = getArguments();
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    Integer.toString(args.getInt(ARG_OBJECT)));
+            questionNo = args.getInt(ARG_OBJECT);
+
+/*            ((TextView) rootView.findViewById(android.R.id.text1)).setText("Question No " +
+                    Integer.toString(args.getInt(ARG_OBJECT))); */
             return rootView;
+        }
+
+        public List<QuestionOption> getData() {
+            List<QuestionOption> data = new ArrayList<>();
+
+            String [] optionNos = {"A ) ", "B ) ", "C ) ", "D )"};
+            String [] optionValue = {"This is option A", "This is option B", "This is option C", "This is option D"};
+
+            for (int i=0; i < optionNos.length; i++ ) {
+                QuestionOption qOpt = new QuestionOption();
+                qOpt.optionName = optionNos[i];
+                qOpt.optionValue = optionValue[i];
+                data.add(qOpt);
+            }
+            return data;
         }
     }
 }
