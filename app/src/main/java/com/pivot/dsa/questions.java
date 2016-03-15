@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -115,7 +117,7 @@ public class questions extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             int questionNo=0;
             View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
-            recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
+            /* recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
 
             qAdapter = new questionsAdapter(getActivity(),getData());
             recyclerView.setAdapter(qAdapter);
@@ -123,12 +125,17 @@ public class questions extends AppCompatActivity {
 
             Bundle args = getArguments();
             questionNo = args.getInt(ARG_OBJECT);
-
+            */
 /*            ((TextView) rootView.findViewById(android.R.id.text1)).setText("Question No " +
                     Integer.toString(args.getInt(ARG_OBJECT))); */
+            ((TextView) rootView.findViewById(R.id.question)).setText("This is question no 1");
+            ((TextView)rootView.findViewById(R.id.optionA)).setText("Select optionA");
+            ((TextView)rootView.findViewById(R.id.optionB)).setText("Select optionB");
+            ((TextView)rootView.findViewById(R.id.optionC)).setText("Select optionC");
+            ((TextView)rootView.findViewById(R.id.optionD)).setText("Select optionD");
             return rootView;
         }
-
+        /*
         public List<QuestionOption> getData() {
             List<QuestionOption> data = new ArrayList<>();
 
@@ -143,5 +150,6 @@ public class questions extends AppCompatActivity {
             }
             return data;
         }
+        */
     }
 }
