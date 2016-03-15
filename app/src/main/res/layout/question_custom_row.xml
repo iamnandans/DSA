@@ -28,5 +28,6 @@
         android:text="this is option#1"
         android:id="@+id/optionValue"
         android:textSize="25dp"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        />
 </LinearLayout>

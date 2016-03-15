@@ -1,5 +1,6 @@
 package com.pivot.dsa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -108,7 +110,7 @@ public class questions extends AppCompatActivity {
     }
 
 
-    public static class  DemoObjectFragment extends Fragment {
+    public static class  DemoObjectFragment extends Fragment implements AdapterView.OnItemClickListener {
 
         public static final String ARG_OBJECT = "Question No ";
 
@@ -128,13 +130,39 @@ public class questions extends AppCompatActivity {
             */
 /*            ((TextView) rootView.findViewById(android.R.id.text1)).setText("Question No " +
                     Integer.toString(args.getInt(ARG_OBJECT))); */
-            ((TextView) rootView.findViewById(R.id.question)).setText("This is question no 1");
+            /*((TextView) rootView.findViewById(R.id.question)).setText("This is question no 1");
             ((TextView)rootView.findViewById(R.id.optionA)).setText("Select optionA");
             ((TextView)rootView.findViewById(R.id.optionB)).setText("Select optionB");
             ((TextView)rootView.findViewById(R.id.optionC)).setText("Select optionC");
             ((TextView)rootView.findViewById(R.id.optionD)).setText("Select optionD");
+            */
+            String [] chapters = {"A. This is option A", "B. This is option B", "C. This is option C", "D. This is option D"};
+
+            ListView listView;
+            listView = (ListView) rootView.findViewById(R.id.quesOptions);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, chapters);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(this);
+
             return rootView;
         }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Message.message(getActivity(),"selection item at position " + position);
+            TextView textView = (TextView) view;
+            textView.setBackgroundResource(R.color.colorAppBar);
+        }
+
+        /*
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView textView = (TextView) view;
+            Intent intent = new Intent("com.pivot.dsa.questions");
+            startActivity(intent);
+            Message.message(getActivity(),"selection item at position " + position);
+        }
+    */
         /*
         public List<QuestionOption> getData() {
             List<QuestionOption> data = new ArrayList<>();
