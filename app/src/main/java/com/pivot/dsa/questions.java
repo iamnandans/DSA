@@ -136,7 +136,7 @@ public class questions extends AppCompatActivity {
             ((TextView)rootView.findViewById(R.id.optionC)).setText("Select optionC");
             ((TextView)rootView.findViewById(R.id.optionD)).setText("Select optionD");
             */
-            String [] questionOptions = {"A. ", "B. ", "C. ", "D. "};
+            String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
             String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
 
             ListView listView;
