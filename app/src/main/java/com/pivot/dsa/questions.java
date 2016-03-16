@@ -136,12 +136,16 @@ public class questions extends AppCompatActivity {
             ((TextView)rootView.findViewById(R.id.optionC)).setText("Select optionC");
             ((TextView)rootView.findViewById(R.id.optionD)).setText("Select optionD");
             */
-            String [] chapters = {"A. This is option A", "B. This is option B", "C. This is option C", "D. This is option D"};
+            String [] questionOptions = {"A. ", "B. ", "C. ", "D. "};
+            String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
 
             ListView listView;
             listView = (ListView) rootView.findViewById(R.id.quesOptions);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, chapters);
-            listView.setAdapter(adapter);
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.fragment_fragment_questions, questionOptions);
+            //listView.setAdapter(adapter);
+
+            QuesAdapter singleRowAdappter = new QuesAdapter(getActivity(),questionOptions);
+            listView.setAdapter(singleRowAdappter);
 
             listView.setOnItemClickListener(this);
 
@@ -150,9 +154,10 @@ public class questions extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Message.message(getActivity(),"selection item at position " + position);
-            TextView textView = (TextView) view;
-            textView.setBackgroundResource(R.color.colorAppBar);
+            Message.message(getActivity(), "selected item at position " + position);
+            /*TextView textView = (TextView) view;
+            textView.setBackgroundResource(R.color.colorAppBar);*/
+            view.setBackgroundResource(R.color.colorAppBar);
         }
 
         /*
