@@ -20,10 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 public class MainOptionsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     DBHelper dbHelper;
+    int MAX_SUBJECTS = 32;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,21 +54,30 @@ public class MainOptionsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dbHelper = new DBHelper(this);
-        DBSubjects subjects = new DBSubjects();
+        DBSubjects subjects = new DBSubjects(this);
         //SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         Cursor cursor = dbHelper.getAllSubjects();
         int count=0;
-        String [] subjectName = {"subject1", "subject2", "subject3", "subject4", "subject4"};
+        int numOfSubjects=0;
+        //String [] subjectName;
+        String [] subjectNameFromDB = new String[MAX_SUBJECTS];
 
-        /*
+        StringBuffer buffer = new StringBuffer();
         while (cursor.moveToNext()) {
-            //int subID = cursor.getInt(cursor.getColumnIndex(subjects.getUID()));
+            int subID = cursor.getInt(cursor.getColumnIndex(subjects.getUID()));
             String subName = cursor.getString(cursor.getColumnIndex(subjects.getSUB_NAME()));
             //int subLevel = cursor.getInt(cursor.getColumnIndex(subjects.getLEVEL()));
-            //buffer.append(subID + "," + subName + "," + subLevel + "--");
-            subjectName[count++] = subName;
+            buffer.append(subID + "," + subName + ",--");
+            subjectNameFromDB[count++] = subName;
+            numOfSubjects++;
         }
-        */
+
+        String [] subjectName = new String[numOfSubjects];
+
+        System.arraycopy(subjectNameFromDB, 0, subjectName, 0, numOfSubjects);
+
+        //Message.message(this, subjectName[0]);
+        Message.message(this,buffer.toString());
 
         ListView listView;
         listView = (ListView) findViewById(R.id.listView);

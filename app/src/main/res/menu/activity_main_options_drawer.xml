@@ -23,19 +23,19 @@
     </item>
 -->
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_pQPaper"
-            android:title="Previous Ques Paper" />
-        <item android:id="@+id/nav_takeTest"
+        <item android:id="@+id/nav_pQPaper" android:icon="@mipmap/ic_qp"
+            android:title="Ques Paper" />
+        <item android:id="@+id/nav_takeTest" android:icon="@mipmap/ic_tt"
             android:title="Take Test" />
         <item android:id="@+id/nav_syncDate" android:icon="@mipmap/ic_sync_data"
             android:title="Sync Data" />
-        <item android:id="@+id/nav_favourite"
-            android:title="List Favourite Questions" />
+        <item android:id="@+id/nav_favourite" android:icon="@mipmap/ic_pin"
+            android:title="Favourite Questions" />
     </group>
 
-            <item android:id="@+id/nav_settings"
+            <item android:id="@+id/nav_settings" android:icon="@mipmap/ic_settings"
                 android:title="Settings" />
-            <item android:id="@+id/nav_upgrade"
+            <item android:id="@+id/nav_upgrade" android:icon="@mipmap/ic_upgrade"
                 android:title="Upgrade" />
 
     <item android:title="Communicate">

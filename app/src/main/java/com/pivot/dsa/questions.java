@@ -1,9 +1,6 @@
 package com.pivot.dsa;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,12 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class questions extends AppCompatActivity {
 
@@ -33,7 +24,7 @@ public class questions extends AppCompatActivity {
     private static RecyclerView recyclerView;
     private static questionsAdapter qAdapter;
 
-    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    QuestionsPagerAdapter mQuestionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +46,11 @@ public class questions extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(mDemoCollectionPagerAdapter);
+        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mQuestionsPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        mTabLayout.setTabsFromPagerAdapter(mDemoCollectionPagerAdapter);
+        mTabLayout.setTabsFromPagerAdapter(mQuestionsPagerAdapter);
 
         mTabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
@@ -82,17 +73,17 @@ public class questions extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+        public QuestionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
-            Fragment fragment = new DemoObjectFragment();
+            Fragment fragment = new QuestionsFragment();
             Bundle args = new Bundle();
-            args.putInt(DemoObjectFragment.ARG_OBJECT, i + 1); // Our object is just an integer :-P
+            args.putInt(QuestionsFragment.ARG_OBJECT, i + 1); // Our object is just an integer :-P
             fragment.setArguments(args);
             return fragment;
         }
@@ -110,7 +101,7 @@ public class questions extends AppCompatActivity {
     }
 
 
-    public static class  DemoObjectFragment extends Fragment implements AdapterView.OnItemClickListener {
+    public static class QuestionsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
         public static final String ARG_OBJECT = "Question No ";
 

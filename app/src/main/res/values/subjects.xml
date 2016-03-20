@@ -1,0 +1,42 @@
+<resources>
+    <integer-array name="SubjectID">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </integer-array>
+
+    <string-array name="SubjectName">
+        <item>General Anatony</item>
+        <item>Physiology</item>
+        <item>Bio Chemistry</item>
+        <item>Dental Materials</item>
+        <item>subject5</item>
+        <item>subject6</item>
+        <item>subject7</item>
+        <item>subject8</item>
+        <item>subject9</item>
+        <item>subject10</item>
+    </string-array>
+
+    <!--
+    <integer-array name="SubjectLevel">
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>2</item>
+        <item>3</item>
+        <item>3</item>
+        <item>4</item>
+        <item>4</item>
+        <item>5</item>
+        <item>5</item>
+    </integer-array>
+    -->
+</resources>

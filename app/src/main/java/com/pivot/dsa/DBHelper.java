@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DB_NAME = "DSA";
-    private static final int DB_VERSION = 28;
+    private static final int DB_VERSION = 31;
     private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
@@ -25,10 +25,10 @@ public class DBHelper extends SQLiteOpenHelper {
         this.context = context;
         Message.message(context, "db constructor called");
 
-        subjects = new DBSubjects();
-        chapters = new DBChapters();
-        questions = new DBQuestions();
-        diagram = new DBDiagram();
+        subjects = new DBSubjects(context);
+        chapters = new DBChapters(this.context);
+        questions = new DBQuestions(this.context);
+        diagram = new DBDiagram(this.context);
         gDB = getWritableDatabase();
     }
 
@@ -63,10 +63,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllSubjects() {
-        String [] columns = {subjects.getUID(),subjects.getSUB_NAME(),subjects.getLEVEL() };
-        Cursor cursor = gDB.query(subjects.getSubjectsTb(),columns,null,null,null,null,null);
-        StringBuffer buffer = new StringBuffer();
+        Cursor cursor = subjects.getAllSubjects(gDB);
+        /* String [] columns = {subjects.getUID(),subjects.getSUB_NAME() };
+        Cursor cursor = gDB.query(subjects.getSubjectsTb(),columns,null,null,null,null,null);*/
+        return cursor;
+    }
 
+    public Cursor getAllChapters() {
+        Cursor cursor = chapters.getAllChapters(gDB);
         return cursor;
     }
 }

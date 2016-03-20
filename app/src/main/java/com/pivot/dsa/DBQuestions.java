@@ -1,5 +1,6 @@
 package com.pivot.dsa;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -17,20 +18,28 @@ public class DBQuestions {
     private String option3 = "option3";
     private String option4 = "option4";
     private String answer = "answer";
-    private DBChapters chapters = new DBChapters();
+    private Context context;
+    private DBChapters chapters;
+    private String CREATE_QUESTIONS_TABLE;
 
-    private String CREATE_QUESTIONS_TABLE = "create table " + QUESTIONS_TB + " (" +
-            UID + " integer primary key, " +
-            chapterID + " integer, " +
-            year + " integer, " +
-            level + " integer, " +
-            question + " varchar(1024), " +
-            option1 + " varchar(1024), " +
-            option2 + " varchar(1024), " +
-            option3 + " varchar(1024), " +
-            option4 + " varchar(1024), " +
-            answer + " varchar(1024), " +
-            "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
+    DBQuestions (Context context) {
+        this.context = context;
+        chapters = new DBChapters(this.context);
+
+        CREATE_QUESTIONS_TABLE = "create table " + QUESTIONS_TB + " (" +
+                UID + " integer primary key, " +
+                chapterID + " integer, " +
+                year + " integer, " +
+                level + " integer, " +
+                question + " varchar(1024), " +
+                option1 + " varchar(1024), " +
+                option2 + " varchar(1024), " +
+                option3 + " varchar(1024), " +
+                option4 + " varchar(1024), " +
+                answer + " varchar(1024), " +
+                "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
+
+    }
 
     private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
 

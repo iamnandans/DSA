@@ -1,6 +1,7 @@
 package com.pivot.dsa;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 
 public class chapters extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    DBHelper dbHelper;
+    int MAX_CHAPTERS = 128;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +28,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,11 +36,31 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
                         .setAction("Action", null).show();
             }
         });
+        */
 
-        String [] chapters = {"chapter1", "chapter2", "chapter3", "chapter4", "chapter5"};
+        dbHelper = new DBHelper(this);
+        //DBChapters dbChapters = new DBChapters(this);
+        Cursor cursor = dbHelper.getAllChapters();
+        int count=0;
+        int numOfChapters=0;
+        String [] chapterNameFromDB = new String[MAX_CHAPTERS];
+
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            int chapID = cursor.getInt(cursor.getColumnIndex(DBChapters.getUID()));
+            String chapName = cursor.getString(cursor.getColumnIndex(DBChapters.getCHAP_NAME()));
+            //buffer.append(subID + "," + subName + ",--");
+            chapterNameFromDB[count++] = chapName;
+            numOfChapters++;
+        }
+
+        String [] chapterNameArray = new String[numOfChapters];
+
+        System.arraycopy(chapterNameFromDB, 0, chapterNameArray, 0, numOfChapters);
+
         ListView listView;
         listView = (ListView) findViewById (R.id.listView2);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, chapters);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, chapterNameArray);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(this);

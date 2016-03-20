@@ -1,5 +1,8 @@
 package com.pivot.dsa;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -7,20 +10,31 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class DBChapters {
     private String CHAPTERS_TB = "chapters";
-    private String UID = "_id";
-    private String CHAP_NAME = "chap_name";
+    private static String UID = "_id";
+    private static String CHAP_NAME = "chap_name";
     private String LEVEL = "chap_level";
-    private String SUBJECT_ID = "subj_id";
-    private DBSubjects subjects = new DBSubjects();
+    private static String SUBJECT_ID = "subj_id";
+    private DBSubjects subjects ; //= new DBSubjects();
+    Context context;
+    private String DROP_CHAP_TABLE;
 
-    private String CREATE_CHAPTERS_TABLE = "create table " + CHAPTERS_TB + " (" +
+    private String CREATE_CHAPTERS_TABLE;  /* = "create table " + CHAPTERS_TB + " (" +
             UID + " integer primary key," +
             SUBJECT_ID + " integer," +
             CHAP_NAME + " varchar(128), " +
             LEVEL + " integer, " +
-            "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " + subjects.getSubjectsTb() + "(" + subjects.getUID() + "));";
+            "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " + subjects.getSubjectsTb() + "(" + subjects.getUID() + "));"; */
 
-    private String DROP_CHAP_TABLE = "drop table if exists " + CHAPTERS_TB;
+    DBChapters(Context context) {
+        this.context = context;
+        subjects = new DBSubjects(context);
+        CREATE_CHAPTERS_TABLE  = "create table " + CHAPTERS_TB + " (" +
+                UID + " integer primary key," +
+                SUBJECT_ID + " integer," +
+                CHAP_NAME + " varchar(128), " +
+                "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " + subjects.getSubjectsTb() + "(" + subjects.getUID() + "));";
+        DROP_CHAP_TABLE = "drop table if exists " + CHAPTERS_TB;
+    }
 
     public String getCreateChapersTable() {
         return CREATE_CHAPTERS_TABLE;
@@ -34,10 +48,25 @@ public class DBChapters {
         return CHAPTERS_TB;
     }
 
-    public String getUID() {
+    public static String getUID() {
         return UID;
     }
 
+    public static String getSUBJECT_ID() {
+        return SUBJECT_ID;
+    }
+
+    public static String getCHAP_NAME() {
+        return CHAP_NAME;
+    }
+
+    public Cursor getAllChapters(SQLiteDatabase db) {
+        String [] columns = {getUID(),getSUBJECT_ID(), getCHAP_NAME() };
+        Cursor cursor = db.query(CHAPTERS_TB,columns,null,null,null,null,null);
+
+        return cursor;
+    }
+    /*
     public String getAllChapters() {
         String subjects = "insert into " + CHAPTERS_TB + " values(1, 1, 'chapter1',1);" ;
         subjects += subjects + "insert into " + CHAPTERS_TB + " values(2, 1 , 'chapter2',1);";
@@ -52,10 +81,27 @@ public class DBChapters {
 
         return subjects;
     }
+    */
 
     public boolean createTBnData(SQLiteDatabase db) {
         db.execSQL(CREATE_CHAPTERS_TABLE);
-        db.execSQL(getAllChapters());
+
+        String [] chaptersArray;
+        Resources res = this.context.getResources();
+        chaptersArray = res.getStringArray(R.array.chapterName);
+
+        int [] chapterID;
+        chapterID = res.getIntArray(R.array.chapterID);
+
+        int [] chapSubID;
+        chapSubID = res.getIntArray(R.array.chapSubjID);
+
+        for (int count=0; count < chaptersArray.length; count++ ) {
+            String SqlStatement = "insert into " + CHAPTERS_TB + " values(" + chapterID[count] + "," + chapSubID[count] + ",'" + chaptersArray[count] + "');" ;
+            db.execSQL(SqlStatement);
+        }
+
+        //db.execSQL(getAllChapters());
         return true;
     }
 }

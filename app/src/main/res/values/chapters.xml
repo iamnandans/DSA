@@ -1,0 +1,85 @@
+<resources>
+    <integer-array name="chapterID">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </integer-array>
+
+    <string-array name="chapterName">
+        <item> chapter1 </item>
+        <item> chapter2 </item>
+        <item> chapter3 </item>
+        <item> chapter4 </item>
+        <item> chapter5 </item>
+        <item> chapter6 </item>
+        <item> chapter7 </item>
+        <item> chapter8 </item>
+        <item> chapter9 </item>
+        <item> chapter10 </item>
+        <item> chapter11 </item>
+        <item> chapter12 </item>
+        <item> chapter13 </item>
+        <item> chapter14 </item>
+        <item> chapter15 </item>
+        <item> chapter16 </item>
+        <item> chapter17 </item>
+        <item> chapter18 </item>
+        <item> chapter19 </item>
+        <item> chapter20 </item>
+    </string-array>
+
+    <integer-array name="chapSubjID">
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>2</item>
+        <item>3</item>
+        <item>3</item>
+        <item>4</item>
+        <item>4</item>
+        <item>5</item>
+        <item>5</item>
+        <item>6</item>
+        <item>6</item>
+        <item>7</item>
+        <item>7</item>
+        <item>8</item>
+        <item>8</item>
+        <item>9</item>
+        <item>9</item>
+        <item>10</item>
+        <item>10</item>
+    </integer-array>
+
+    <!--
+    <integer-array name="ChapterLevel">
+        <item>1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>2</item>
+        <item>3</item>
+        <item>3</item>
+        <item>4</item>
+        <item>4</item>
+        <item>5</item>
+        <item>5</item>
+    </integer-array>
+    -->
+</resources>

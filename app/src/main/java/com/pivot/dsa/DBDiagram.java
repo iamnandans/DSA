@@ -1,5 +1,6 @@
 package com.pivot.dsa;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -16,19 +17,25 @@ public class DBDiagram {
     private String option3Diagram = "opt3Diagram";
     private String option4Diagram = "opt4Diagram";
     private String ansDiagram = "ansDiagram";
-    private DBQuestions question = new DBQuestions();
+    private DBQuestions question;
+    private Context context;
 
+    private String CREATE_DIAGRAM_TABLE ;
 
-    private String CREATE_DIAGRAM_TABLE = "create table " + DIAGRAM_TB + " (" +
-            UID + " integer primary key, " +
-            questionID + " integer, " +
-            qDiagram + " varchar(256), " +
-            option1Diagram + " varchar(256), " +
-            option2Diagram + " varchar(256), " +
-            option3Diagram + " varchar(256), " +
-            option4Diagram + " varchar(256), " +
-            ansDiagram + " varchar(256), " +
-            "FOREIGN KEY (" + questionID + ") REFERENCES " + question.getQUESTIONS_TB() + "(" + question.getUID() + "));";
+    DBDiagram (Context context) {
+        this.context = context;
+        question = new DBQuestions(this.context);
+        CREATE_DIAGRAM_TABLE = "create table " + DIAGRAM_TB + " (" +
+                UID + " integer primary key, " +
+                questionID + " integer, " +
+                qDiagram + " varchar(256), " +
+                option1Diagram + " varchar(256), " +
+                option2Diagram + " varchar(256), " +
+                option3Diagram + " varchar(256), " +
+                option4Diagram + " varchar(256), " +
+                ansDiagram + " varchar(256), " +
+                "FOREIGN KEY (" + questionID + ") REFERENCES " + question.getQUESTIONS_TB() + "(" + question.getUID() + "));";
+    }
 
     private String DROP_DIAGRAM_TABLE = "drop table if exists " + DIAGRAM_TB;
 
