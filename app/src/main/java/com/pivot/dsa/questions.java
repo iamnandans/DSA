@@ -1,5 +1,7 @@
 package com.pivot.dsa;
 
+import android.app.ListFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,14 +10,23 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class questions extends AppCompatActivity {
 
@@ -23,6 +34,7 @@ public class questions extends AppCompatActivity {
     TabLayout mTabLayout;
     private static RecyclerView recyclerView;
     private static questionsAdapter qAdapter;
+    private static QuesAdapter quesAdapter;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
 
@@ -33,15 +45,6 @@ public class questions extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-/*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -110,33 +113,18 @@ public class questions extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             int questionNo=0;
             View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
-            /* recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
 
-            qAdapter = new questionsAdapter(getActivity(),getData());
-            recyclerView.setAdapter(qAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-            Bundle args = getArguments();
-            questionNo = args.getInt(ARG_OBJECT);
-            */
-/*            ((TextView) rootView.findViewById(android.R.id.text1)).setText("Question No " +
-                    Integer.toString(args.getInt(ARG_OBJECT))); */
-            /*((TextView) rootView.findViewById(R.id.question)).setText("This is question no 1");
-            ((TextView)rootView.findViewById(R.id.optionA)).setText("Select optionA");
-            ((TextView)rootView.findViewById(R.id.optionB)).setText("Select optionB");
-            ((TextView)rootView.findViewById(R.id.optionC)).setText("Select optionC");
-            ((TextView)rootView.findViewById(R.id.optionD)).setText("Select optionD");
-            */
             String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
             String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
 
             ListView listView;
             listView = (ListView) rootView.findViewById(R.id.quesOptions);
-            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),R.layout.fragment_fragment_questions, questionOptions);
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
             //listView.setAdapter(adapter);
 
-            QuesAdapter singleRowAdappter = new QuesAdapter(getActivity(),questionOptions);
-            listView.setAdapter(singleRowAdappter);
+            quesAdapter = new QuesAdapter(getActivity());
+            listView.setAdapter(quesAdapter);
+            //QuesAdapter singleRowAdappter  = new QuesAdapter(getActivity());
 
             listView.setOnItemClickListener(this);
 
@@ -146,34 +134,73 @@ public class questions extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Message.message(getActivity(), "selected item at position " + position);
-            /*TextView textView = (TextView) view;
-            textView.setBackgroundResource(R.color.colorAppBar);*/
             view.setBackgroundResource(R.color.colorAppBar);
         }
+    }
 
-        /*
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            TextView textView = (TextView) view;
-            Intent intent = new Intent("com.pivot.dsa.questions");
-            startActivity(intent);
-            Message.message(getActivity(),"selection item at position " + position);
-        }
-    */
-        /*
-        public List<QuestionOption> getData() {
-            List<QuestionOption> data = new ArrayList<>();
+}
 
-            String [] optionNos = {"A ) ", "B ) ", "C ) ", "D )"};
-            String [] optionValue = {"This is option A", "This is option B", "This is option C", "This is option D"};
+class QuesAdapter extends BaseAdapter {
 
-            for (int i=0; i < optionNos.length; i++ ) {
-                QuestionOption qOpt = new QuestionOption();
-                qOpt.optionName = optionNos[i];
-                qOpt.optionValue = optionValue[i];
-                data.add(qOpt);
+    ArrayList<SingleRow> list;
+    SingleRow item=null;
+    static Context context;
+
+    QuesAdapter (Context context) {
+        String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
+        String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
+        list = new ArrayList<SingleRow>();
+        try {
+            for (int count = 0; count < 4; count++) {
+                item = new SingleRow(questionOptions[count], questionOptions1[count], questionOptions1[count]);
+                list.add(item);
             }
-            return data;
+        } catch (Exception e) {
+            Log.d("nandan", "exception " + e);
         }
-        */
+        this.context = context;
+    }
+
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return list.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.question_custom_row,parent,false);
+        TextView optNo = (TextView) row.findViewById(R.id.optionNo);
+        TextView optValue = (TextView) row.findViewById(R.id.optionValue);
+        ImageView optImage = (ImageView) row.findViewById(R.id.optionImage);
+
+        SingleRow temp = list.get(position);
+        optNo.setText(temp.optionNo);
+        optValue.setText(temp.optionValue);
+        //optImage.setImageResource(temp.optionImage);
+        return row;
+    }
+}
+
+class SingleRow {
+    String optionNo;
+    String  optionImage;
+    String optionValue;
+
+    SingleRow(String optNo,String optImg, String optValue ) {
+        this.optionNo = optNo;
+        this.optionImage = optImg;
+        this.optionValue = optValue;
     }
 }
