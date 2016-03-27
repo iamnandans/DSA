@@ -60,14 +60,15 @@ public class DBChapters {
         return CHAP_NAME;
     }
 
-    public Cursor getAllChapters(SQLiteDatabase db) {
+    public Cursor getAllChapters(SQLiteDatabase db,int subject_id) {
         String [] columns = {getUID(),getSUBJECT_ID(), getCHAP_NAME() };
-        Cursor cursor = db.query(CHAPTERS_TB,columns,null,null,null,null,null);
+        String [] columnValues = {String.valueOf(subject_id)};
+        Cursor cursor = db.query(CHAPTERS_TB,columns,SUBJECT_ID + "=?",columnValues,null,null,null);
 
         return cursor;
     }
     /*
-    public String getAllChapters() {
+    public String getAllChaptersForSubject() {
         String subjects = "insert into " + CHAPTERS_TB + " values(1, 1, 'chapter1',1);" ;
         subjects += subjects + "insert into " + CHAPTERS_TB + " values(2, 1 , 'chapter2',1);";
         subjects += subjects + "insert into " + CHAPTERS_TB + " values(3, 1, 'chapter3',2);";
@@ -101,7 +102,7 @@ public class DBChapters {
             db.execSQL(SqlStatement);
         }
 
-        //db.execSQL(getAllChapters());
+        //db.execSQL(getAllChaptersForSubject());
         return true;
     }
 }

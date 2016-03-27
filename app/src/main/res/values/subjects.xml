@@ -1,4 +1,10 @@
 <resources>
+    <string-array name="SubjectsTB">
+        <item>_id</item>
+        <item>sub_name</item>
+        <item>sub_level</item>
+    </string-array>
+
     <integer-array name="SubjectID">
         <item>1</item>
         <item>2</item>

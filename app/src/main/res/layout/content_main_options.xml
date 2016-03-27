@@ -14,7 +14,7 @@
     tools:showIn="@layout/app_bar_main_options">
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/subListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="0dp"
@@ -24,6 +24,5 @@
         android:dividerHeight="1dp"
         android:drawSelectorOnTop="false"
         android:headerDividersEnabled="true"
-        android:padding="0dp"
-        android:touchscreenBlocksFocus="false" />
+        android:padding="0dp" />
 </LinearLayout>

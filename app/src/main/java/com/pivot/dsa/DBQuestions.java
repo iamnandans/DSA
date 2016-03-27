@@ -64,7 +64,7 @@ public class DBQuestions {
                 " 'option1','option2','option3','option4','this is the explanation for the question' );") ;
         db.execSQL(question1.toString());
 
-        //db.execSQL(getAllChapters());
+        //db.execSQL(getAllChaptersForSubject());
         return true;
     }
 

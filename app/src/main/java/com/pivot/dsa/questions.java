@@ -2,6 +2,7 @@ package com.pivot.dsa;
 
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ public class questions extends AppCompatActivity {
     private static RecyclerView recyclerView;
     private static questionsAdapter qAdapter;
     private static QuesAdapter quesAdapter;
+    private int subjectID;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
 
@@ -45,9 +47,6 @@ public class questions extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         viewPager = (ViewPager) findViewById(R.id.pager);
         mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mQuestionsPagerAdapter);
@@ -57,6 +56,24 @@ public class questions extends AppCompatActivity {
 
         mTabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
+        subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
+
+        int chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
+
+        Message.message(this, "chapter id " + chapterID);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //String data = mEditText.getText();
+        Intent intent = new Intent();
+        intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
+        setResult(RESULT_OK, intent);
     }
 
     @Override
@@ -114,8 +131,8 @@ public class questions extends AppCompatActivity {
             int questionNo=0;
             View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
 
-            String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
-            String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
+            //String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
+            //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
 
             ListView listView;
             listView = (ListView) rootView.findViewById(R.id.quesOptions);
@@ -150,14 +167,12 @@ class QuesAdapter extends BaseAdapter {
         String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
         String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
         list = new ArrayList<SingleRow>();
-        try {
-            for (int count = 0; count < 4; count++) {
-                item = new SingleRow(questionOptions[count], questionOptions1[count], questionOptions1[count]);
-                list.add(item);
-            }
-        } catch (Exception e) {
-            Log.d("nandan", "exception " + e);
+
+        for (int count = 0; count < 4; count++) {
+            item = new SingleRow(questionOptions[count], questionOptions1[count], questionOptions1[count]);
+            list.add(item);
         }
+
         this.context = context;
     }
 

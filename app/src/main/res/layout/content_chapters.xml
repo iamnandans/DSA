@@ -13,12 +13,14 @@
     tools:showIn="@layout/activity_chapters">
 
     <ListView
-        android:id="@+id/listView2"
+        android:id="@+id/chapListView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="516dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:divider="@color/colorAppBar"
         android:dividerHeight="1dp" />
+
+
 </LinearLayout>

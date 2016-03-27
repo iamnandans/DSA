@@ -1,4 +1,10 @@
 <resources>
+    <string-array name="ChaptersTB">
+        <item>_id</item>
+        <item>subj_id</item>
+        <item>chap_name</item>
+    </string-array>
+
     <integer-array name="chapterID">
         <item>1</item>
         <item>2</item>

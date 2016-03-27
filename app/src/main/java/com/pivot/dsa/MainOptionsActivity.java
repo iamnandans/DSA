@@ -2,10 +2,7 @@ package com.pivot.dsa;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,12 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.Arrays;
+import android.widget.SimpleCursorAdapter;
 
 public class MainOptionsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
@@ -53,40 +49,7 @@ public class MainOptionsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        dbHelper = new DBHelper(this);
-        DBSubjects subjects = new DBSubjects(this);
-        //SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        Cursor cursor = dbHelper.getAllSubjects();
-        int count=0;
-        int numOfSubjects=0;
-        //String [] subjectName;
-        String [] subjectNameFromDB = new String[MAX_SUBJECTS];
-
-        StringBuffer buffer = new StringBuffer();
-        while (cursor.moveToNext()) {
-            int subID = cursor.getInt(cursor.getColumnIndex(subjects.getUID()));
-            String subName = cursor.getString(cursor.getColumnIndex(subjects.getSUB_NAME()));
-            //int subLevel = cursor.getInt(cursor.getColumnIndex(subjects.getLEVEL()));
-            buffer.append(subID + "," + subName + ",--");
-            subjectNameFromDB[count++] = subName;
-            numOfSubjects++;
-        }
-
-        String [] subjectName = new String[numOfSubjects];
-
-        System.arraycopy(subjectNameFromDB, 0, subjectName, 0, numOfSubjects);
-
-        //Message.message(this, subjectName[0]);
-        Message.message(this,buffer.toString());
-
-        ListView listView;
-        listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, subjectName);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(this);
-
-        //Message.message(this,subjectsTB);
+        getAllSubjects();
     }
 
     @Override
@@ -148,9 +111,79 @@ public class MainOptionsActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TextView textView = (TextView) view;
+        //TextView textView = (TextView) view;
         Intent intent = new Intent("com.pivot.dsa.chapters");
+        intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],position + 1);
         startActivity(intent);
         //Message.message(this, textView.getText().toString());
+    }
+
+    private void getAllSubjects () {
+        dbHelper = new DBHelper(this);
+        DBSubjects subjects = new DBSubjects(this);
+        Cursor cursor = dbHelper.getAllSubjects();
+
+        /*int count=0;
+        int numOfSubjects=0;
+        //String [] subjectName;
+        String [] subjectNameFromDB = new String[MAX_SUBJECTS];
+
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            int subID = cursor.getInt(cursor.getColumnIndex(subjects.getUID()));
+            String subName = cursor.getString(cursor.getColumnIndex(subjects.getSUB_NAME()));
+            //int subLevel = cursor.getInt(cursor.getColumnIndex(subjects.getLEVEL()));
+            buffer.append(subID + "," + subName + ",--");
+            subjectNameFromDB[count++] = subName;
+            numOfSubjects++;
+        }
+
+        String [] subjectName = new String[numOfSubjects];
+
+        System.arraycopy(subjectNameFromDB, 0, subjectName, 0, numOfSubjects);
+
+        //Message.message(this, subjectName[0]);
+        //Message.message(this,buffer.toString());
+
+        ListView listView;
+        listView = (ListView) findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1, subjectName);
+        listView.setAdapter(adapter);
+        */
+
+        String [] fromFieldNames = new String [] { subjects.getSUB_NAME()};
+        int [] viewIDs = new int [] {R.id.name};
+        ListView listView;
+        listView = (ListView) findViewById(R.id.subListView);
+
+        SimpleCursorAdapter cursorAdapter;
+        cursorAdapter = new SimpleCursorAdapter(this, R.layout.single_row,cursor,fromFieldNames,viewIDs,0);
+
+        listView.setAdapter(cursorAdapter);
+
+        listView.setOnItemClickListener(this);
+    }
+
+    class SubAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
     }
 }

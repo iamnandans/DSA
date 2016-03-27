@@ -52,7 +52,7 @@ public class DBDiagram {
                 "'/data/data/DSA/image2','/data/data/DSA/image3','/data/data/DSA/image4','/data/data/DSA/andDia');") ;
         db.execSQL(diagram1.toString());
 
-        //db.execSQL(getAllChapters());
+        //db.execSQL(getAllChaptersForSubject());
         return true;
     }
 
