@@ -87,6 +87,9 @@ public class questions extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if ( id == R.id.home ) {
+            Intent intent = new Intent();
+            intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
+            setResult(RESULT_OK, intent);
             NavUtils.navigateUpFromSameTask(this);
         }
 

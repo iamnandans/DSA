@@ -70,7 +70,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         //TextView textView = (TextView) view;
         cursor.moveToPosition(position);
         int chapID = cursor.getInt(cursor.getColumnIndex(DBChapters.getUID()));
-        //subjectIDStatic = subjectID;
+        subjectIDStatic = subjectID;
         Intent intent = new Intent("com.pivot.dsa.questions");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
         intent.putExtra(this.getResources().getStringArray(R.array.ChaptersTB)[0],chapID);
