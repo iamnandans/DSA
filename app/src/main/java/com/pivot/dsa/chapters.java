@@ -54,7 +54,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         subjectIDStatic=0;
         super.onBackPressed();
     }
-
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -64,7 +64,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
            }
         }
     }
-
+*/
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //TextView textView = (TextView) view;
@@ -74,7 +74,8 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         Intent intent = new Intent("com.pivot.dsa.questions");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
         intent.putExtra(this.getResources().getStringArray(R.array.ChaptersTB)[0],chapID);
-        startActivityForResult(intent, RESULT_OK);
+        //startActivityForResult(intent, RESULT_OK);
+        startActivity(intent);
         //Message.message(this,textView.getText().toString());
     }
 

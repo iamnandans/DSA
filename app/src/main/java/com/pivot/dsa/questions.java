@@ -67,6 +67,7 @@ public class questions extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    /*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -75,7 +76,7 @@ public class questions extends AppCompatActivity {
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
         setResult(RESULT_OK, intent);
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -87,9 +88,9 @@ public class questions extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         } else if ( id == R.id.home ) {
-            Intent intent = new Intent();
+            /*Intent intent = new Intent();
             intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
-            setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, intent);*/
             NavUtils.navigateUpFromSameTask(this);
         }
 
@@ -122,7 +123,6 @@ public class questions extends AppCompatActivity {
             return "Ques " + (position + 1);
         }
     }
-
 
     public static class QuestionsFragment extends Fragment implements AdapterView.OnItemClickListener {
 
