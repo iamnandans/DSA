@@ -73,4 +73,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = chapters.getAllChapters(gDB,subjectID);
         return cursor;
     }
+
+    public Cursor getAllQuestionsForChapter(int chapterID) {
+        Cursor cursor = questions.getAllQuestionsForChapter(gDB,chapterID);
+        return cursor;
+    }
 }
+
+

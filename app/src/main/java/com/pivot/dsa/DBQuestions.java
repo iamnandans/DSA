@@ -1,6 +1,7 @@
 package com.pivot.dsa;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -8,16 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class DBQuestions {
     private String QUESTIONS_TB = "questions";
-    private String UID = "_id";
-    private String chapterID = "chapterID";
-    private String year = "year";
-    private String level = "level";
-    private String question = "question";
-    private String option1 = "option1";
-    private String option2 = "option2";
-    private String option3 = "option3";
-    private String option4 = "option4";
-    private String answer = "answer";
+    private static String UID = "_id";
+    private static String chapterID = "chapterID";
+    private static String year = "year";
+    private static String level = "level";
+    private static String question = "question";
+    private static String option1 = "option1";
+    private static String option2 = "option2";
+    private static String option3 = "option3";
+    private static String option4 = "option4";
+    private static String answer = "answer";
     private Context context;
     private DBChapters chapters;
     private String CREATE_QUESTIONS_TABLE;
@@ -38,7 +39,6 @@ public class DBQuestions {
                 option4 + " varchar(1024), " +
                 answer + " varchar(1024), " +
                 "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
-
     }
 
     private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
@@ -47,8 +47,35 @@ public class DBQuestions {
         return QUESTIONS_TB;
     }
 
-    public String getUID() {
+    public static String getUID() {
         return UID;
+    }
+    public static String getChapterID() {
+        return chapterID;
+    }
+
+    public static String getQuestion() {
+        return question;
+    }
+
+    public static String getOption1() {
+        return option1;
+    }
+
+    public static String getOption2() {
+        return option2;
+    }
+
+    public static String getOption3() {
+        return option3;
+    }
+
+    public static String getOption4() {
+        return option4;
+    }
+
+    public static String getAnswer() {
+        return answer;
     }
 
     public boolean createTBnData(SQLiteDatabase db) {
@@ -70,5 +97,13 @@ public class DBQuestions {
 
     public String getDropQuesionsTable() {
         return DROP_QUESTIONS_TABLE;
+    }
+
+    public Cursor getAllQuestionsForChapter(SQLiteDatabase db,int chapterID) {
+        String [] columns = {UID,question,option1, option2, option3, option4, answer};
+        String [] columnValues = {String.valueOf(chapterID)};
+        Cursor cursor = db.query(QUESTIONS_TB,columns,chapterID + "=?",columnValues,null,null,null);
+
+        return cursor;
     }
 }

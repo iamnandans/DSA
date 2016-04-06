@@ -3,6 +3,8 @@ package com.pivot.dsa;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,7 @@ public class questions extends AppCompatActivity {
     private static questionsAdapter qAdapter;
     private static QuesAdapter quesAdapter;
     private int subjectID;
+    private int chapterID;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
 
@@ -47,8 +50,11 @@ public class questions extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
+        chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
+
         viewPager = (ViewPager) findViewById(R.id.pager);
-        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager());
+        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager(), this, subjectID, chapterID );
         viewPager.setAdapter(mQuestionsPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -57,14 +63,15 @@ public class questions extends AppCompatActivity {
         mTabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
-        subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
-
-        int chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
 
         Message.message(this, "chapter id " + chapterID);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void getQuestions(Cursor cursor) {
+
     }
 
     /*
@@ -97,128 +104,40 @@ public class questions extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public QuestionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            Fragment fragment = new QuestionsFragment();
-            Bundle args = new Bundle();
-            args.putInt(QuestionsFragment.ARG_OBJECT, i + 1); // Our object is just an integer :-P
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            // For this contrived example, we have a 100-object collection.
-            return 100;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Ques " + (position + 1);
-        }
-    }
-
-    public static class QuestionsFragment extends Fragment implements AdapterView.OnItemClickListener {
-
-        public static final String ARG_OBJECT = "Question No ";
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            int questionNo=0;
-            View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
-
-            //String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
-            //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
-
-            ListView listView;
-            listView = (ListView) rootView.findViewById(R.id.quesOptions);
-            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
-            //listView.setAdapter(adapter);
-
-            quesAdapter = new QuesAdapter(getActivity());
-            listView.setAdapter(quesAdapter);
-            //QuesAdapter singleRowAdappter  = new QuesAdapter(getActivity());
-
-            listView.setOnItemClickListener(this);
-
-            return rootView;
-        }
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Message.message(getActivity(), "selected item at position " + position);
-            view.setBackgroundResource(R.color.colorAppBar);
-        }
-    }
 
 }
+class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
+    Context context;
+    int subjectID;
+    int chapterID;
 
-class QuesAdapter extends BaseAdapter {
-
-    ArrayList<SingleRow> list;
-    SingleRow item=null;
-    static Context context;
-
-    QuesAdapter (Context context) {
-        String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
-        String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
-        list = new ArrayList<SingleRow>();
-
-        for (int count = 0; count < 4; count++) {
-            item = new SingleRow(questionOptions[count], questionOptions1[count], questionOptions1[count]);
-            list.add(item);
-        }
-
+    public QuestionsPagerAdapter(FragmentManager fm, Context context, int subjectID, int chapterID) {
+        super(fm);
         this.context = context;
+        this.subjectID = subjectID;
+        this.chapterID = chapterID;
     }
 
+    @Override
+    public Fragment getItem(int i) {
+        Fragment fragment = new fragmentQuestions();
+        Bundle args = new Bundle();
+        args.putInt(fragmentQuestions.QUES_NO, i + 1); // Our object is just an integer :-P
+        args.putInt(fragmentQuestions.CHAP_NO, chapterID); // Our object is just an integer :-P
+        args.putInt(fragmentQuestions.SUB_NO, subjectID); // Our object is just an integer :-P
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public int getCount() {
-        return list.size();
+        // For this contrived example, we have a 100-object collection.
+        return 100;
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.question_custom_row,parent,false);
-        TextView optNo = (TextView) row.findViewById(R.id.optionNo);
-        TextView optValue = (TextView) row.findViewById(R.id.optionValue);
-        ImageView optImage = (ImageView) row.findViewById(R.id.optionImage);
-
-        SingleRow temp = list.get(position);
-        optNo.setText(temp.optionNo);
-        optValue.setText(temp.optionValue);
-        //optImage.setImageResource(temp.optionImage);
-        return row;
-    }
-}
-
-class SingleRow {
-    String optionNo;
-    String  optionImage;
-    String optionValue;
-
-    SingleRow(String optNo,String optImg, String optValue ) {
-        this.optionNo = optNo;
-        this.optionImage = optImg;
-        this.optionValue = optValue;
+    public CharSequence getPageTitle(int position) {
+        return "Ques " + (position + 1);
     }
 }
