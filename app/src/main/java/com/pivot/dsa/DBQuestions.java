@@ -83,7 +83,7 @@ public class DBQuestions {
 
         StringBuffer question = new StringBuffer();
         question.append("insert into " + QUESTIONS_TB + " values(1, 1, 2014, 1, 'this is question1 in year 2014 with level 1', " +
-                        " 'option1','option2','option3','option4','this is the explanation for the question' );") ;
+                " 'option1','option2','option3','option4','this is the explanation for the question' );") ;
         db.execSQL(question.toString());
 
         StringBuffer question1 = new StringBuffer();
@@ -99,10 +99,10 @@ public class DBQuestions {
         return DROP_QUESTIONS_TABLE;
     }
 
-    public Cursor getAllQuestionsForChapter(SQLiteDatabase db,int chapterID) {
-        String [] columns = {UID,question,option1, option2, option3, option4, answer};
-        String [] columnValues = {String.valueOf(chapterID)};
-        Cursor cursor = db.query(QUESTIONS_TB,columns,chapterID + "=?",columnValues,null,null,null);
+    public Cursor getAllQuestionsForChapter(SQLiteDatabase db,int chapterIDV) {
+        String [] columns = {UID, chapterID, year, level, question,option1, option2, option3, option4, answer};
+        String [] columnValues = {String.valueOf(chapterIDV)};
+        Cursor cursor = db.query(QUESTIONS_TB,columns, chapterID + "=?",columnValues,null,null,null);
 
         return cursor;
     }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,9 +105,14 @@ public class fragmentQuestions extends Fragment {
         if ( questionNo != -1 ) {
             dbHelper = new DBHelper(getActivity());
             cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
-            cursor.moveToPosition(questionNo);
+            //TODO : have to handle this condition
+            //if ( cursor == null )
+            //cursor.moveToPosition(questionNo);
+            cursor.moveToFirst();
         }
 
+        String[] col = cursor.getColumnNames();
+        //`Log.d("nan", "nan1 - " + cursor.getCount() + " -- " + cursor.getColumnIndex(DBQuestions.getQuestion()));
         String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         String answer = cursor.getString(cursor.getColumnIndex(DBQuestions.getAnswer()));
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class questions extends AppCompatActivity {
+public class questions extends AppCompatActivity implements fragmentQuestions.OnFragmentInteractionListener {
 
     ViewPager viewPager;
     TabLayout mTabLayout;
@@ -104,9 +105,12 @@ public class questions extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-
+    }
 }
+
 class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
     Context context;
     int subjectID;
@@ -140,4 +144,5 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return "Ques " + (position + 1);
     }
+
 }
