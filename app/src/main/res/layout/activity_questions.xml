@@ -25,7 +25,9 @@
             android:id="@+id/tab_layout"
             app.tabGravity="fill"
             app:tabMode="scrollable"
-            android:background="@color/colorAppBar">
+            android:background="@color/colorAppBar"
+            app:tabBackground="@drawable/ques_tab_color_selector"
+            app:tabIndicatorColor="@color/colorAppBar">
         </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
