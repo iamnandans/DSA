@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,13 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_options, menu);
+        return true;
+    }
+
     public void getQuestions(Cursor cursor) {
 
     }
@@ -93,13 +101,13 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_goto_ques) {
             return true;
         } else if ( id == R.id.home ) {
             /*Intent intent = new Intent();
             intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
             setResult(RESULT_OK, intent);*/
-            NavUtils.navigateUpFromSameTask(this);
+            //NavUtils.navigateUpFromSameTask(this);
         }
 
         return super.onOptionsItemSelected(item);

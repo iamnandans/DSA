@@ -87,13 +87,13 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /* if (id == R.id.action_settings) {
             return true;
         } else if ( id == R.id.home ) {
             subjectIDStatic = 0;
             NavUtils.navigateUpFromSameTask(this);
         }
-
+        */
         return super.onOptionsItemSelected(item);
     }
 
