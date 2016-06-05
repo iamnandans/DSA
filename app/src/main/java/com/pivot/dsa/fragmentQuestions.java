@@ -2,6 +2,7 @@ package com.pivot.dsa;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,9 @@ public class fragmentQuestions extends Fragment {
     Bundle args = getArguments();
     static int questionNo = -1;
     QuesAdapter quesAdapter;
-
+    ListView listView;
+    View rootView;
+    questions ques;
 
 
     public fragmentQuestions() {
@@ -90,13 +94,16 @@ public class fragmentQuestions extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
+        rootView = inflater.inflate(R.layout.fragment_fragment_questions, container, false);
         list = new ArrayList<SingleRow>();
         maxQuesOpt = this.getResources().getInteger(R.integer.MaxQuesOpt);
 
         questionNo = getArguments().getInt(QUES_NO);
         chapterNo = getArguments().getInt(CHAP_NO);
         subjectNo = getArguments().getInt(SUB_NO);
+
+        ques = (questions) getActivity();
+        int selectedQues = ques.getTabSelected();
 
         String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
         //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
@@ -112,8 +119,7 @@ public class fragmentQuestions extends Fragment {
         }
 
         String[] col = cursor.getColumnNames();
-        //`Log.d("nan", "nan1 - " + cursor.getCount() + " -- " + cursor.getColumnIndex(DBQuestions.getQuestion()));
-        String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
+        final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         String answer = cursor.getString(cursor.getColumnIndex(DBQuestions.getAnswer()));
 
         TextView tvQues = (TextView) rootView.findViewById(R.id.question);
@@ -121,14 +127,20 @@ public class fragmentQuestions extends Fragment {
 
         int count=0;
 
-        ListView listView;
         listView = (ListView) rootView.findViewById(R.id.quesOptions);
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
         //listView.setAdapter(adapter);
-
-        quesAdapter = new QuesAdapter(getActivity(), cursor);
+        //listView.setOnItemClickListener(onItemClick(rootView.findViewById(android.R.id.content)));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //questions ques = (questions) getActivity();
+                ques.optionSelected(position);
+                view.setSelected(true);
+            }
+        });
+        quesAdapter = new QuesAdapter(getActivity(), cursor, selectedQues);
         listView.setAdapter(quesAdapter);
-        //QuesAdapter singleRowAdappter  = new QuesAdapter(getActivity());
 
         return rootView;
     }
@@ -173,7 +185,6 @@ public class fragmentQuestions extends Fragment {
     }
 }
 
-
 class QuesAdapter extends BaseAdapter {
 
     ArrayList<SingleRow> list;
@@ -182,10 +193,10 @@ class QuesAdapter extends BaseAdapter {
     Cursor cursor;
     int questionNo=0;
 
-    QuesAdapter (Context context, Cursor cursor) {
+    QuesAdapter (Context context, Cursor cursor, int selectedQuestionNo) {
         this.context = context;
         this.cursor = cursor;
-        this.questionNo = questionNo;
+        this.questionNo = selectedQuestionNo;
 
         String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
         String [] questionOptions1 = new String[4] ; //{ "this is option A", "this is option B", "this is option C", "this is option D"};
@@ -246,7 +257,7 @@ class QuesAdapter extends BaseAdapter {
         SingleRow temp = list.get(position);
         optNo.setText(temp.optionNo);
         optValue.setText(temp.optionValue);
-        //optImage.setImageResource(temp.optionImage);
+
         return row;
     }
 }

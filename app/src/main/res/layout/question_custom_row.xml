@@ -12,8 +12,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text=""
         android:id="@+id/optionNo"
-        android:textSize="30dp"
-        android:paddingLeft="5dp" />
+        android:textSize="25dp"
+        android:paddingLeft="5dp"
+        android:background="@drawable/ques_option_bg"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -23,11 +24,12 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="43dp"
+        android:layout_height="47dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="this is option#1"
         android:id="@+id/optionValue"
         android:textSize="25dp"
-        android:paddingLeft="10dp"
-        />
+        android:paddingLeft="0dp"
+        android:background="@drawable/ques_option_bg" />
+
 </LinearLayout>

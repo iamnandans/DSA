@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class questions extends AppCompatActivity implements fragmentQuestions.OnFragmentInteractionListener {
@@ -42,6 +43,9 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     private static QuesAdapter quesAdapter;
     private int subjectID;
     private int chapterID;
+    //TODO - initialize the array with no of questions after retrieving from database.
+    int optionSelected[];
+    final int noOfChoices = 4;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
 
@@ -66,10 +70,58 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
 
-        Message.message(this, "chapter id " + chapterID);
+        //Message.message(this, "chapter id " + chapterID);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //TODO: array should be initialized to number of rows in database.
+        optionSelected = new int[100];
+        Arrays.fill(optionSelected, -1);
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                ListView lv = (ListView) findViewById(R.id.quesOptions);
+                int tabPosition = tab.getPosition();
+
+                if ( optionSelected[tabPosition] != -1 ) {
+                    for (int count=0; count < noOfChoices; count++ ) {
+                        if ( count == optionSelected[tabPosition] )
+                            lv.getChildAt(count).setSelected(true);
+                        else
+                            lv.getChildAt(count).setSelected(false);
+                    }
+                }
+                else {
+                    for (int count=0; count < noOfChoices; count++ ) {
+                        lv.getChildAt(count).setSelected(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+    }
+
+    public void optionSelected(int selectedOptionNo) {
+        int tabNo = mTabLayout.getSelectedTabPosition();
+        optionSelected[tabNo] = selectedOptionNo;
+    }
+
+    public int previousSelectedOption(int questionNo) {
+        return optionSelected[mTabLayout.getSelectedTabPosition()];
+    }
+
+    public int getTabSelected() {
+        return mTabLayout.getSelectedTabPosition();
     }
 
     @Override
@@ -133,12 +185,16 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+        int selectedTab;
+        questions ques = (questions) context;
+        selectedTab = ques.getTabSelected();
         Fragment fragment = new fragmentQuestions();
         Bundle args = new Bundle();
-        args.putInt(fragmentQuestions.QUES_NO, i + 1); // Our object is just an integer :-P
+        args.putInt(fragmentQuestions.QUES_NO, selectedTab); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.CHAP_NO, chapterID); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.SUB_NO, subjectID); // Our object is just an integer :-P
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -150,7 +206,7 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Ques " + (position + 1);
+        return "Q " + (position + 1);
     }
 
 }
