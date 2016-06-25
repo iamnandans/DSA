@@ -14,8 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 
 import java.util.Arrays;
 
@@ -30,11 +35,14 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     private int chapterID;
     //TODO - initialize the array with no of questions after retrieving from database.
     int optionSelected[];
-    final int noOfChoices = 4;
+    final int noOfChoices = commonDefines.noOfOptions;
     //TODO: should be initialized to total questions from database
-    int totalQuestions = 100;
+    int totalQuestions = 0;
+    DBHelper dbHelper;
+    Cursor cursor;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
+    private BottomSheetDialog dialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +50,19 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         setContentView(R.layout.activity_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dialog = new BottomSheetDialog(this);
 
         subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
         chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
 
+        dbHelper = new DBHelper(this);
+        cursor = dbHelper.getAllQuestionsForChapter(chapterID);
+
+        //Message.message(this, "total questions -- " + cursor.getCount());
+        totalQuestions = cursor.getCount();
+
         viewPager = (ViewPager) findViewById(R.id.pager);
-        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager(), this, subjectID, chapterID, totalQuestions );
+        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager(), this, subjectID, chapterID, cursor );
         viewPager.setAdapter(mQuestionsPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -160,6 +175,16 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             setResult(RESULT_OK, intent);*/
             //NavUtils.navigateUpFromSameTask(this);
         }
+        else if ( id == R.id.action_ans ) {
+            View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
+            TextView tv = (TextView) view.findViewById(R.id.ans_text);
+            tv.setText("Right answer text can be set here. Have to get data from database and update the text here");
+            // image for answer can be set here
+            //ImageView ans_image = (ImageView) view.findViewById(R.id.ans_image);
+
+            dialog.setContentView(view);
+            dialog.show();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -181,13 +206,15 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
     int subjectID;
     int chapterID;
     int totalQues;
+    Cursor cursor;
 
-    public QuestionsPagerAdapter(FragmentManager fm, Context context, int subjectID, int chapterID, int totalQuestions) {
+    public QuestionsPagerAdapter(FragmentManager fm, Context context, int subjectID, int chapterID, Cursor cursor) {
         super(fm);
         this.context = context;
         this.subjectID = subjectID;
         this.chapterID = chapterID;
-        this.totalQues = totalQuestions;
+        this.totalQues = cursor.getCount();
+        this.cursor = cursor;
     }
 
     @Override
@@ -207,7 +234,6 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        // For this contrived example, we have a 100-object collection.
         return this.totalQues;
     }
 

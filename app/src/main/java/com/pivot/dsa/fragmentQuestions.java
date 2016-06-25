@@ -61,6 +61,7 @@ public class fragmentQuestions extends Fragment {
 
     public fragmentQuestions() {
         // Required empty public constructor
+        //this.cursor = cursor;
     }
 
     /**
@@ -72,6 +73,8 @@ public class fragmentQuestions extends Fragment {
      * @return A new instance of fragment fragmentQuestions.
      */
     // TODO: Rename and change types and number of parameters
+
+    /*
     public static fragmentQuestions newInstance(String param1, String param2) {
         fragmentQuestions fragment = new fragmentQuestions();
         Bundle args = new Bundle();
@@ -80,6 +83,7 @@ public class fragmentQuestions extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,13 +113,14 @@ public class fragmentQuestions extends Fragment {
         //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
         String [] questionOptions1 = new String[maxQuesOpt];
 
+        Message.message(getActivity(), "question no is " + questionNo);
         if ( questionNo != -1 ) {
             dbHelper = new DBHelper(getActivity());
             cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
             //TODO : have to handle this condition
             //if ( cursor == null )
-            //cursor.moveToPosition(questionNo);
-            cursor.moveToFirst();
+            cursor.moveToPosition(questionNo-1);
+            //cursor.moveToFirst();
         }
 
         String[] col = cursor.getColumnNames();

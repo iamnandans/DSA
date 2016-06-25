@@ -5,4 +5,5 @@ package com.pivot.dsa;
  */
 public class commonDefines {
     public static final String totalQues="totalQues";
+    public static final int noOfOptions=4;
 }
