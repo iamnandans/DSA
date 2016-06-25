@@ -42,6 +42,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     Cursor cursor;
     DBAnswers dbAnswers;
     private int tabQuestionNo=-1;
+    private int correctAnsOption=-1;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
     private BottomSheetDialog dialog ;
@@ -130,6 +131,13 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         tabQuestionNo = questionNo;
     }
 
+    /* set the answer for current question here and add in answer text at beginning.
+       will be used when answer option is clicked an app bar
+     */
+    public void setAnswerForQuestion(int ansOption) {
+        correctAnsOption = ansOption;
+    }
+
     public int previousSelectedOption(int questionNo) {
         return optionSelected[mTabLayout.getSelectedTabPosition()];
     }
@@ -190,14 +198,16 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         else if ( id == R.id.action_ans ) {
             String ans_desc=null;
             Cursor cursorAns = null;
+
+            ans_desc = "(" + correctAnsOption + ") option is the correct answer. \n \n" ;
             try {
                 cursorAns = dbHelper.getAnswerForQuestion( tabQuestionNo );
                 String[] col = cursorAns.getColumnNames();
                 cursorAns.moveToFirst();
-                ans_desc = cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
+                ans_desc = ans_desc + cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
             } catch ( Exception e ) {
                 //cursorAns.close();
-                ans_desc = "Could not find answer description";
+                //ans_desc = ans_desc + "Could not find answer description";
             }
             View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
             TextView tv = (TextView) view.findViewById(R.id.ans_text);

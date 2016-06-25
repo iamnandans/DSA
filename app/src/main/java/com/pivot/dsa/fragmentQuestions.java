@@ -124,7 +124,7 @@ public class fragmentQuestions extends Fragment {
         }
         //String[] col = cursor.getColumnNames();
         final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
-        //String answer = cursor.getString(cursor.getColumnIndex(DBQuestions.getAnswer()));
+        int answerOption = cursor.getInt(cursor.getColumnIndex(DBQuestions.getAnswer()));
 
         TextView tvQues = (TextView) rootView.findViewById(R.id.question);
         tvQues.setText(question);
@@ -132,6 +132,7 @@ public class fragmentQuestions extends Fragment {
         final int dbQuesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
         ques.setQuestionNumber(dbQuesID);
 
+        ques.setAnswerForQuestion(answerOption);
         //int count=0;
 
         listView = (ListView) rootView.findViewById(R.id.quesOptions);
