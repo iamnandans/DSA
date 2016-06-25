@@ -23,7 +23,7 @@ public class DBQuestions {
     private DBChapters chapters;
     private String CREATE_QUESTIONS_TABLE;
 
-    DBQuestions (Context context) {
+    DBQuestions(Context context) {
         this.context = context;
         chapters = new DBChapters(this.context);
 
@@ -37,8 +37,10 @@ public class DBQuestions {
                 option2 + " varchar(1024), " +
                 option3 + " varchar(1024), " +
                 option4 + " varchar(1024), " +
-                answer + " varchar(1024), " +
+                answer + " integer, " +
                 "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
+
+
     }
 
     private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
@@ -50,6 +52,7 @@ public class DBQuestions {
     public static String getUID() {
         return UID;
     }
+
     public static String getChapterID() {
         return chapterID;
     }
@@ -83,12 +86,12 @@ public class DBQuestions {
 
         StringBuffer question = new StringBuffer();
         question.append("insert into " + QUESTIONS_TB + " values(1, 1, 2014, 1, 'this is question1 in year 2014 with level 1', " +
-                " 'option1','option2','option3','option4','this is the explanation for the question' );") ;
+                " 'option1','option2','option3','option4',1 );");
         db.execSQL(question.toString());
 
         StringBuffer question1 = new StringBuffer();
         question1.append("insert into " + QUESTIONS_TB + " values(2, 2, 2014, 1, 'this is question2 in year 2014 with level 2', " +
-                " 'option1','option2','option3','option4','this is the explanation for the question' );") ;
+                " 'option1','option2','option3','option4',2 );");
         db.execSQL(question1.toString());
 
         //db.execSQL(getAllChaptersForSubject());
@@ -99,10 +102,10 @@ public class DBQuestions {
         return DROP_QUESTIONS_TABLE;
     }
 
-    public Cursor getAllQuestionsForChapter(SQLiteDatabase db,int chapterIDV) {
-        String [] columns = {UID, chapterID, year, level, question,option1, option2, option3, option4, answer};
-        String [] columnValues = {String.valueOf(chapterIDV)};
-        Cursor cursor = db.query(QUESTIONS_TB,columns, chapterID + "=?",columnValues,null,null,null);
+    public Cursor getAllQuestionsForChapter (SQLiteDatabase db, int chapterIDV) {
+        String[] columns = {UID, chapterID, year, level, question, option1, option2, option3, option4, answer};
+        String[] columnValues = {String.valueOf(chapterIDV)};
+        Cursor cursor = db.query(QUESTIONS_TB, columns, chapterID + "=?", columnValues, null, null, null);
 
         return cursor;
     }

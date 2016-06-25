@@ -119,18 +119,20 @@ public class fragmentQuestions extends Fragment {
             cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
             //TODO : have to handle this condition
             //if ( cursor == null )
-            cursor.moveToPosition(questionNo-1);
-            //cursor.moveToFirst();
+            //cursor.moveToPosition(questionNo-1);
+            cursor.moveToFirst();
         }
-
-        String[] col = cursor.getColumnNames();
+        //String[] col = cursor.getColumnNames();
         final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
-        String answer = cursor.getString(cursor.getColumnIndex(DBQuestions.getAnswer()));
+        //String answer = cursor.getString(cursor.getColumnIndex(DBQuestions.getAnswer()));
 
         TextView tvQues = (TextView) rootView.findViewById(R.id.question);
         tvQues.setText(question);
 
-        int count=0;
+        final int dbQuesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+        ques.setQuestionNumber(dbQuesID);
+
+        //int count=0;
 
         listView = (ListView) rootView.findViewById(R.id.quesOptions);
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);

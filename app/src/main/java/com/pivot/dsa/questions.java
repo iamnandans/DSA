@@ -40,6 +40,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     int totalQuestions = 0;
     DBHelper dbHelper;
     Cursor cursor;
+    DBAnswers dbAnswers;
+    private int tabQuestionNo=-1;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
     private BottomSheetDialog dialog ;
@@ -57,6 +59,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
         dbHelper = new DBHelper(this);
         cursor = dbHelper.getAllQuestionsForChapter(chapterID);
+
+        dbAnswers = new DBAnswers(this);
 
         //Message.message(this, "total questions -- " + cursor.getCount());
         totalQuestions = cursor.getCount();
@@ -118,6 +122,14 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         optionSelected[tabNo] = selectedOptionNo;
     }
 
+    /*
+        tab number and question number in db are different. Setting the same here,
+        which will be used which answer option is clicked
+     */
+    public void setQuestionNumber(int questionNo) {
+        tabQuestionNo = questionNo;
+    }
+
     public int previousSelectedOption(int questionNo) {
         return optionSelected[mTabLayout.getSelectedTabPosition()];
     }
@@ -176,9 +188,20 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             //NavUtils.navigateUpFromSameTask(this);
         }
         else if ( id == R.id.action_ans ) {
+            String ans_desc=null;
+            Cursor cursorAns = null;
+            try {
+                cursorAns = dbHelper.getAnswerForQuestion( tabQuestionNo );
+                String[] col = cursorAns.getColumnNames();
+                cursorAns.moveToFirst();
+                ans_desc = cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
+            } catch ( Exception e ) {
+                //cursorAns.close();
+                ans_desc = "Could not find answer description";
+            }
             View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
             TextView tv = (TextView) view.findViewById(R.id.ans_text);
-            tv.setText("Right answer text can be set here. Have to get data from database and update the text here");
+            tv.setText(ans_desc);
             // image for answer can be set here
             //ImageView ans_image = (ImageView) view.findViewById(R.id.ans_image);
 
