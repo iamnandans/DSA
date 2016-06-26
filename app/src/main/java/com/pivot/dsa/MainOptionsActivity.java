@@ -17,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainOptionsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
@@ -111,11 +114,12 @@ public class MainOptionsActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //TextView textView = (TextView) view;
+
         Intent intent = new Intent("com.pivot.dsa.chapters");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],position + 1);
+        intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[1],((TextView) view.findViewById(R.id.name)).getText().toString());
+
         startActivity(intent);
-        //Message.message(this, textView.getText().toString());
     }
 
     private void getAllSubjects () {

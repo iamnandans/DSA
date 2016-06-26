@@ -33,6 +33,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     private static QuesAdapter quesAdapter;
     private int subjectID;
     private int chapterID;
+    private String chapter_name=null;
     //TODO - initialize the array with no of questions after retrieving from database.
     int optionSelected[];
     final int noOfChoices = commonDefines.noOfOptions;
@@ -57,6 +58,9 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
         subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
         chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
+        chapter_name = getIntent().getExtras().getString(this.getResources().getStringArray(R.array.ChaptersTB)[2]);
+
+        this.setTitle(chapter_name);
 
         dbHelper = new DBHelper(this);
         cursor = dbHelper.getAllQuestionsForChapter(chapterID);

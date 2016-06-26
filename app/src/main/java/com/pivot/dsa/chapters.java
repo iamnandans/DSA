@@ -21,6 +21,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
     DBChapters chapters;
     Cursor cursor;
     private int subjectID;
+    private String subject_name=null;
     private static int subjectIDStatic = 0;
 
     @Override
@@ -33,6 +34,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         chapters = new DBChapters(this);
         if ( subjectIDStatic == 0 ) {
             subjectID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.SubjectsTB)[0]);
+            subject_name = getIntent().getExtras().getString(this.getResources().getStringArray(R.array.SubjectsTB)[1]);
         }
         else {
             subjectID = subjectIDStatic;
@@ -47,6 +49,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        this.setTitle(subject_name);
     }
 
     @Override
@@ -74,9 +77,9 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         Intent intent = new Intent("com.pivot.dsa.questions");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
         intent.putExtra(this.getResources().getStringArray(R.array.ChaptersTB)[0],chapID);
-        //startActivityForResult(intent, RESULT_OK);
+        intent.putExtra(this.getResources().getStringArray(R.array.ChaptersTB)[2],cursor.getString(cursor.getColumnIndex(DBChapters.getCHAP_NAME())));
+
         startActivity(intent);
-        //Message.message(this,textView.getText().toString());
     }
 
     @Override
