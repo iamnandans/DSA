@@ -19,6 +19,7 @@ public class DBQuestions {
     private static String option3 = "option3";
     private static String option4 = "option4";
     private static String answer = "answer";
+    private static String pinned = "pinned";
     private Context context;
     private DBChapters chapters;
     private String CREATE_QUESTIONS_TABLE;
@@ -38,9 +39,8 @@ public class DBQuestions {
                 option3 + " varchar(1024), " +
                 option4 + " varchar(1024), " +
                 answer + " integer, " +
+                pinned + " integer, " +
                 "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
-
-
     }
 
     private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
@@ -86,12 +86,12 @@ public class DBQuestions {
 
         StringBuffer question = new StringBuffer();
         question.append("insert into " + QUESTIONS_TB + " values(1, 1, 2014, 1, 'this is question1 in year 2014 with level 1', " +
-                " 'option1','option2','option3','option4',1 );");
+                " 'option1','option2','option3','option4',1,0 );");
         db.execSQL(question.toString());
 
         StringBuffer question1 = new StringBuffer();
         question1.append("insert into " + QUESTIONS_TB + " values(2, 2, 2014, 1, 'this is question2 in year 2014 with level 2', " +
-                " 'option1','option2','option3','option4',2 );");
+                " 'option1','option2','option3','option4',2,0 );");
         db.execSQL(question1.toString());
 
         //db.execSQL(getAllChaptersForSubject());

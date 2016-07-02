@@ -49,7 +49,8 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        this.setTitle(subject_name);
+        if ( subject_name != "" )
+            this.setTitle(subject_name);
     }
 
     @Override

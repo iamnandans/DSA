@@ -1,6 +1,7 @@
 package com.pivot.dsa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +13,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -82,9 +87,11 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
 
         //Message.message(this, "chapter id " + chapterID);
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /* home button is disabled as of now, as event handling could not be done. Handling the
+           event is required to display subject name in app title bar
+         */
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //TODO: array should be initialized to number of rows in database.
         optionSelected = new int[totalQuestions];
         Arrays.fill(optionSelected, -1);
@@ -164,13 +171,41 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     /*
     @Override
     public void onBackPressed() {
+        Message.message(this, "home button pressed");
         super.onBackPressed();
         //String data = mEditText.getText();
         Intent intent = new Intent();
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
         setResult(RESULT_OK, intent);
     }
-*/
+    */
+    /*
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+    */
+    /*
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        Message.message(this, "keycode is " + keyCode);
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            Message.message(this, "Back button pressed....");
+        }
+        else if(keyCode == KeyEvent.KEYCODE_HOME)
+        {
+            Message.message(this, "home button presses!");
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -184,11 +219,17 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             //TabLayout.Tab tab = mTabLayout.getTabAt(5);
             //tab.select();
 
-            gotoQuesDialog quesDialog = new gotoQuesDialog();
-            Bundle args = new Bundle();
-            args.putInt(commonDefines.totalQues, totalQuestions);
-            quesDialog.setArguments(args);
-            quesDialog.show(getFragmentManager(), "Select Question Alert");
+            if ( totalQuestions == 0 ) {
+                Toast.makeText(this, getResources().getString(R.string.ques_zeo_question) , Toast.LENGTH_LONG).show();
+            } else if ( totalQuestions < 3 ) {
+                Toast.makeText(this, getResources().getString(R.string.ques_total_questions), Toast.LENGTH_LONG).show();
+            } else {
+                gotoQuesDialog quesDialog = new gotoQuesDialog();
+                Bundle args = new Bundle();
+                args.putInt(commonDefines.totalQues, totalQuestions);
+                quesDialog.setArguments(args);
+                quesDialog.show(getFragmentManager(), "Select Question Alert");
+            }
 
         } else if (id == R.id.action_pin ) {
             Message.message(this, "action pin clicked");
@@ -198,29 +239,36 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
             setResult(RESULT_OK, intent);*/
             //NavUtils.navigateUpFromSameTask(this);
+            //super.onBackPressed();
+            //Message.message(this, "testing home button");
         }
         else if ( id == R.id.action_ans ) {
             String ans_desc=null;
             Cursor cursorAns = null;
 
-            ans_desc = "(" + correctAnsOption + ") option is the correct answer. \n \n" ;
-            try {
-                cursorAns = dbHelper.getAnswerForQuestion( tabQuestionNo );
-                String[] col = cursorAns.getColumnNames();
-                cursorAns.moveToFirst();
-                ans_desc = ans_desc + cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
-            } catch ( Exception e ) {
-                //cursorAns.close();
-                //ans_desc = ans_desc + "Could not find answer description";
-            }
-            View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
-            TextView tv = (TextView) view.findViewById(R.id.ans_text);
-            tv.setText(ans_desc);
-            // image for answer can be set here
-            //ImageView ans_image = (ImageView) view.findViewById(R.id.ans_image);
+            if ( correctAnsOption == -1 ) {
+                Toast.makeText(this, getResources().getString(R.string.ques_invalid), Toast.LENGTH_LONG).show();
+            } else {
 
-            dialog.setContentView(view);
-            dialog.show();
+                ans_desc = "(" + correctAnsOption + ") " + getResources().getString(R.string.ques_correct_option) + "\n \n";
+                try {
+                    cursorAns = dbHelper.getAnswerForQuestion(tabQuestionNo);
+                    String[] col = cursorAns.getColumnNames();
+                    cursorAns.moveToFirst();
+                    ans_desc = ans_desc + cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
+                } catch (Exception e) {
+                    //cursorAns.close();
+                    //ans_desc = ans_desc + "Could not find answer description";
+                }
+                View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
+                TextView tv = (TextView) view.findViewById(R.id.ans_text);
+                tv.setText(ans_desc);
+                // image for answer can be set here
+                //ImageView ans_image = (ImageView) view.findViewById(R.id.ans_image);
+
+                dialog.setContentView(view);
+                dialog.show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
