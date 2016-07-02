@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="ques_zeo_question"> Total number of questions is Zero.</string>
+    <string name="ques_total_questions">Click on (Q ?) tab to move to preferred question.</string>
+    <string name="ques_correct_option">option is the correct answer.</string>
+    <string name="ques_invalid">Not a valid question.</string>
     <integer name="MaxQuesOpt">4</integer>
 </resources>

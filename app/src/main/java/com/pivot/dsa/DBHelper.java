@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DB_NAME = "DSA";
-    private static final int DB_VERSION = 35;
+    private static final int DB_VERSION = 38;
     private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
