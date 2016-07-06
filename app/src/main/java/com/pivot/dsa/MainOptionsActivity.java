@@ -1,8 +1,11 @@
 package com.pivot.dsa;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +29,11 @@ public class MainOptionsActivity extends AppCompatActivity
 
     DBHelper dbHelper;
     int MAX_SUBJECTS = 32;
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarbHandler = new Handler();
+    private long fileSize = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -81,6 +89,7 @@ public class MainOptionsActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
+            startSyncProcess();
             Message.message(this, "Sync buttoDMEPS7235Cn clicked.....action yet to be implemented");
             return true;
         }
@@ -118,7 +127,7 @@ public class MainOptionsActivity extends AppCompatActivity
 
         Intent intent = new Intent("com.pivot.dsa.chapters");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],position + 1);
-        intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[1],((TextView) view.findViewById(R.id.name)).getText().toString());
+        intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[1], ((TextView) view.findViewById(R.id.name)).getText().toString());
 
         startActivity(intent);
     }
@@ -167,6 +176,55 @@ public class MainOptionsActivity extends AppCompatActivity
         listView.setAdapter(cursorAdapter);
 
         listView.setOnItemClickListener(this);
+    }
+
+    private void startSyncProcess () {
+
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(false);
+        progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        progressBar.setTitle("Syncing Data with Server....");
+        progressBar.setMessage("File downloading ...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        progressBarStatus = 0;
+
+        fileSize = 0;
+        new Thread(new Runnable() {
+            int count=0;
+            public void run() {
+                try {
+                    synchronized (this) {
+                        wait(1000);
+
+                        setStatus("Syncing subjects....");
+                        wait(10000);
+                        setStatus("Syncing chapters....");
+                        wait(10000);
+                        progressBar.dismiss();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void setStatus(final String statusMessage ) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                    progressBar.setMessage(statusMessage);
+            }
+        });
     }
 
     class SubAdapter extends BaseAdapter {
