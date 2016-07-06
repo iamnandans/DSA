@@ -68,7 +68,7 @@ public class MainOptionsActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.action_bar_ques, menu);
+        getMenuInflater().inflate(R.menu.action_bar_subject, menu);
         return true;
     }
 
@@ -80,9 +80,10 @@ public class MainOptionsActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
+        if (id == R.id.action_sync) {
+            Message.message(this, "Sync buttoDMEPS7235Cn clicked.....action yet to be implemented");
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }

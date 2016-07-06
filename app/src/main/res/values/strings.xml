@@ -8,6 +8,7 @@
     <string name="action_pin">Pin</string>
     <string name="action_goto_ques">Ques</string>
     <string name="action_ans">Ans</string>
+    <string name="action_sync">Sync</string>
     <string name="title_activity_chapters">Chapters</string>
     <string name="title_activity_questions">Questions</string>
 
