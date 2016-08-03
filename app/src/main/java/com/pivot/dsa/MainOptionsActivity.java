@@ -1,11 +1,14 @@
 package com.pivot.dsa;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,7 +25,23 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
+
+import static java.lang.Long.getLong;
 
 public class MainOptionsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
@@ -33,6 +52,7 @@ public class MainOptionsActivity extends AppCompatActivity
     private int progressBarStatus = 0;
     private Handler progressBarbHandler = new Handler();
     private long fileSize = 0;
+    private String last_update_date = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +199,9 @@ public class MainOptionsActivity extends AppCompatActivity
     }
 
     private void startSyncProcess () {
+        /* http://www.tutorialspoint.com/android/android_progress_circle.htm
 
+         */
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(false);
         progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -189,6 +211,7 @@ public class MainOptionsActivity extends AppCompatActivity
             }
         });
 
+        /* move all constant messages to strings.xml file */
         progressBar.setTitle("Syncing Data with Server....");
         progressBar.setMessage("File downloading ...");
         progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -203,12 +226,18 @@ public class MainOptionsActivity extends AppCompatActivity
             public void run() {
                 try {
                     synchronized (this) {
+                        setStatus("Syncing Data....");
                         wait(1000);
-
+                        last_update_date = getLastUpdateDateFromSharedPreference();
+                        Log.d("httprequest","last_update_date=" + last_update_date);
+                        /* move all constant messages to strings.xml file */
                         setStatus("Syncing subjects....");
-                        wait(10000);
+                        //Log.d("nandan", "testing log.d messaegs");
+                        syncData(1);
+                        //wait(10000);
                         setStatus("Syncing chapters....");
-                        wait(10000);
+                        //wait(10000);
+                        writeLastUpdateDateToSharedPreference();
                         progressBar.dismiss();
                     }
                 } catch (InterruptedException e) {
@@ -218,7 +247,37 @@ public class MainOptionsActivity extends AppCompatActivity
         }).start();
     }
 
+    public void syncData(int typeOfData ) {
+        CloudData subjData = new CloudData();
+
+        String subjectsData = subjData.getData(typeOfData, last_update_date, this);
+    }
+
+    public String getLastUpdateDateFromSharedPreference() {
+        String last_update_date;
+        String defaultDate = getString(R.string.default_last_update_date);
+
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.app_resource_file), Context.MODE_PRIVATE);
+        last_update_date = sharedPref.getString(getString(R.string.last_update_date), defaultDate);
+
+        return last_update_date;
+        //return defaultDate;
+    }
+
+    public void writeLastUpdateDateToSharedPreference() {
+        Date now = new Date();
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.app_resource_file), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.last_update_date), Long.toString(now.getTime()/1000));
+        editor.commit();
+        //Log.d("dateformat", now.toString() + "--" + (now.getTime()/1000));
+    }
+
     public void setStatus(final String statusMessage ) {
+        /* runOnUiThread method is required to change the progressbar mesasage */
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
