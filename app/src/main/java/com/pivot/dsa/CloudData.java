@@ -25,9 +25,21 @@ import java.util.Date;
 public class CloudData  {
     String getData(int dataType, String last_update_date, Context ctx) {
         HttpClient httpclient = new DefaultHttpClient();
+        String url;
 
         //String url = "http://www.mysoredentalcare.com/test/data.php?mod_date=" + last_update_date;
-        String url = ctx.getString(R.string.subjects_url) + last_update_date;
+        if ( dataType == R.integer.subj_id )
+            url = ctx.getString(R.string.subjects_url) + last_update_date;
+        else if ( dataType == R.integer.chap_id )
+            url = ctx.getString(R.string.chapters_url) + last_update_date;
+        else if (dataType == R.integer.ques_id )
+            url = ctx.getString(R.string.questions_url) + last_update_date;
+        else if (dataType == R.integer.ans_id )
+            url = ctx.getString(R.string.answers_url) + last_update_date;
+        else {
+            return null;
+        }
+
         // Prepare a request object
         HttpGet httpget = new HttpGet(url);
 
@@ -51,10 +63,7 @@ public class CloudData  {
                 // now you have the string representation of the HTML request
                 instream.close();
                 Log.d("hhtpresponse", result);
-                if ( result.equals("0") )
-                    return null;
-                else
-                    return result;
+                return result;
                 /*
                 //JSONObject jsonObj = new JSONObject(result);
                 JSONArray subjects = new JSONArray(result);

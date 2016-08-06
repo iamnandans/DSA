@@ -1,4 +1,5 @@
 <resources>
+    <integer name="subj_id">1</integer>
     <string-array name="SubjectsTB">
         <item>_id</item>
         <item>sub_name</item>
@@ -45,4 +46,7 @@
         <item>5</item>
     </integer-array>
     -->
+    <string name="subj_upto_date">Nothing to update</string>
+    <string name="subj_updated">Subjects Updated</string>
+
 </resources>

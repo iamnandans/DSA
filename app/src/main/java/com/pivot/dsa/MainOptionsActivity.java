@@ -191,8 +191,7 @@ public class MainOptionsActivity extends AppCompatActivity
         listView = (ListView) findViewById(R.id.subListView);
 
         SimpleCursorAdapter cursorAdapter;
-        cursorAdapter = new SimpleCursorAdapter(this, R.layout.single_row,cursor,fromFieldNames,viewIDs,0);
-
+        cursorAdapter = new SimpleCursorAdapter(this, R.layout.single_row, cursor,fromFieldNames,viewIDs,0);
         listView.setAdapter(cursorAdapter);
 
         listView.setOnItemClickListener(this);
@@ -229,13 +228,12 @@ public class MainOptionsActivity extends AppCompatActivity
                         setStatus("Syncing Data....");
                         wait(1000);
                         last_update_date = getLastUpdateDateFromSharedPreference();
-                        Log.d("httprequest","last_update_date=" + last_update_date);
+                        Log.d("httprequest", "last_update_date=" + last_update_date);
                         /* move all constant messages to strings.xml file */
-                        setStatus("Syncing subjects....");
+
                         //Log.d("nandan", "testing log.d messaegs");
-                        syncData(1);
+                        syncData();
                         //wait(10000);
-                        setStatus("Syncing chapters....");
                         //wait(10000);
                         writeLastUpdateDateToSharedPreference();
                         progressBar.dismiss();
@@ -247,10 +245,68 @@ public class MainOptionsActivity extends AppCompatActivity
         }).start();
     }
 
-    public void syncData(int typeOfData ) {
-        CloudData subjData = new CloudData();
+    public void syncData() {
+        dbHelper = new DBHelper(this);
+        CloudData cloudData = new CloudData();
+        int typeOfData;
+        int retVal = 0;
 
-        String subjectsData = subjData.getData(typeOfData, last_update_date, this);
+
+        /* sync subjects */
+        setStatus("Syncing subjects....");
+        typeOfData = R.integer.subj_id;
+        String subjectsData = cloudData.getData(typeOfData, last_update_date, this);
+
+        if ( subjectsData == null ) {
+            Log.d("error:", getString(R.string.get_subj_failed));
+        } else if ( subjectsData.equals("0") ) {
+            Log.d("error:", getString(R.string.subj_upto_date));
+        } else {
+            retVal = dbHelper.updateSubjectsData(subjectsData);
+            Log.d("Result:", retVal + " " + getString(R.string.subj_updated));
+        }
+
+        /* sync chapters */
+        setStatus("Syncing chapters....");
+        typeOfData = R.integer.chap_id;
+        String chaptersData = cloudData.getData(typeOfData, last_update_date, this);
+
+        if ( chaptersData == null ) {
+            Log.d("Error:", getString(R.string.get_chap_failed));
+        } else if ( chaptersData.equals("0") ) {
+            Log.d("error:", getString(R.string.chap_upto_date));
+        } else {
+            retVal = dbHelper.updateChaptersData(chaptersData);
+            Log.d("Result:", retVal + " " + getString(R.string.chap_updated));
+        }
+
+        /* sync questions */
+        setStatus("Syncing questions....");
+        typeOfData = R.integer.ques_id;
+        String questionsData = cloudData.getData(typeOfData, last_update_date, this);
+
+        if ( questionsData == null ) {
+            Log.d("error:", getString(R.string.get_ques_failed));
+        } else if ( questionsData.equals("0") ) {
+            Log.d("error:", getString(R.string.ques_upto_date));
+        } else {
+            retVal = dbHelper.updateQuestionsData(questionsData);
+            Log.d("error:", retVal + " " + getString(R.string.ques_updated));
+        }
+
+        /* sync answers */
+        setStatus("Syncing answers....");
+        typeOfData = R.integer.ans_id;
+        String answersData = cloudData.getData(typeOfData, last_update_date, this);
+
+        if ( questionsData == null ) {
+            Log.d("error:", getString(R.string.get_ans_failed));
+        } else if ( answersData.equals("0") ) {
+            Log.d("error:", getString(R.string.ans_upto_date));
+        } else {
+            retVal = dbHelper.updateAnswersData(answersData);
+            Log.d("error:", retVal + " " + getString(R.string.ans_updated));
+        }
     }
 
     public String getLastUpdateDateFromSharedPreference() {
@@ -261,8 +317,8 @@ public class MainOptionsActivity extends AppCompatActivity
                 getString(R.string.app_resource_file), Context.MODE_PRIVATE);
         last_update_date = sharedPref.getString(getString(R.string.last_update_date), defaultDate);
 
-        return last_update_date;
-        //return defaultDate;
+        //return last_update_date;
+        return defaultDate;
     }
 
     public void writeLastUpdateDateToSharedPreference() {

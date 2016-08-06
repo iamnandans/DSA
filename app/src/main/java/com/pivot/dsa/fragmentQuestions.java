@@ -129,7 +129,7 @@ public class fragmentQuestions extends Fragment {
         TextView tvQues = (TextView) rootView.findViewById(R.id.question);
         tvQues.setText(question);
 
-        final int dbQuesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+        final int dbQuesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getID()));
         ques.setQuestionNumber(dbQuesID);
 
         ques.setAnswerForQuestion(answerOption);
@@ -214,7 +214,7 @@ class QuesAdapter extends BaseAdapter {
         StringBuffer buffer = new StringBuffer();
         //cursor.moveToPosition(questionNo);
 
-        int quesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+        int quesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getID()));
         /*
         String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         String option1 = cursor.getString(cursor.getColumnIndex(DBQuestions.getOption1()));

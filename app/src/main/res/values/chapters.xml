@@ -1,4 +1,5 @@
 <resources>
+    <integer name="chap_id">2</integer>
     <string-array name="ChaptersTB">
         <item>_id</item>
         <item>subj_id</item>
@@ -88,4 +89,6 @@
         <item>5</item>
     </integer-array>
     -->
+    <string name="chap_upto_date">Nothing to update</string>
+    <string name="chap_updated">Chapters Updated</string>
 </resources>

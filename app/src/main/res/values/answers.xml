@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="ans_id">4</integer>
+    <string name="ans_upto_date">Nothing to update</string>
+    <string name="ans_updated">Answers Updated</string>
+</resources>

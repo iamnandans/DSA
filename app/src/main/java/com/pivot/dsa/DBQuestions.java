@@ -1,8 +1,13 @@
 package com.pivot.dsa;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by shanthan on 3/6/2016.
@@ -10,16 +15,17 @@ import android.database.sqlite.SQLiteDatabase;
 public class DBQuestions {
     private String QUESTIONS_TB = "questions";
     private static String UID = "_id";
-    private static String chapterID = "chapterID";
-    private static String year = "year";
-    private static String level = "level";
-    private static String question = "question";
-    private static String option1 = "option1";
-    private static String option2 = "option2";
-    private static String option3 = "option3";
-    private static String option4 = "option4";
-    private static String answer = "answer";
-    private static String pinned = "pinned";
+    private static String ID = "id";
+    private static String CHAPTER_ID = "chapterID";
+    private static String YEAR = "year";
+    private static String LEVEL = "level";
+    private static String QUESTION = "question";
+    private static String OPTION1 = "option1";
+    private static String OPTION2 = "option2";
+    private static String OPTION3 = "option3";
+    private static String OPTION4 = "option4";
+    private static String ANSWER = "answer";
+    private static String PINNED = "pinned";
     private Context context;
     private DBChapters chapters;
     private String CREATE_QUESTIONS_TABLE;
@@ -29,18 +35,18 @@ public class DBQuestions {
         chapters = new DBChapters(this.context);
 
         CREATE_QUESTIONS_TABLE = "create table " + QUESTIONS_TB + " (" +
-                UID + " integer primary key, " +
-                chapterID + " integer, " +
-                year + " integer, " +
-                level + " integer, " +
-                question + " varchar(1024), " +
-                option1 + " varchar(1024), " +
-                option2 + " varchar(1024), " +
-                option3 + " varchar(1024), " +
-                option4 + " varchar(1024), " +
-                answer + " integer, " +
-                pinned + " integer, " +
-                "FOREIGN KEY (" + chapterID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getUID() + "));";
+                ID + " integer primary key, " +
+                CHAPTER_ID + " integer, " +
+                YEAR + " integer, " +
+                LEVEL + " integer, " +
+                QUESTION + " varchar(1024), " +
+                OPTION1 + " varchar(1024), " +
+                OPTION2 + " varchar(1024), " +
+                OPTION3 + " varchar(1024), " +
+                OPTION4 + " varchar(1024), " +
+                ANSWER + " integer, " +
+                PINNED + " integer, " +
+                "FOREIGN KEY (" + CHAPTER_ID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getID() + "));";
     }
 
     private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
@@ -49,36 +55,36 @@ public class DBQuestions {
         return QUESTIONS_TB;
     }
 
-    public static String getUID() {
-        return UID;
+    public static String getID() {
+        return ID;
     }
 
     public static String getChapterID() {
-        return chapterID;
+        return CHAPTER_ID;
     }
 
     public static String getQuestion() {
-        return question;
+        return QUESTION;
     }
 
     public static String getOption1() {
-        return option1;
+        return OPTION1;
     }
 
     public static String getOption2() {
-        return option2;
+        return OPTION2;
     }
 
     public static String getOption3() {
-        return option3;
+        return OPTION3;
     }
 
     public static String getOption4() {
-        return option4;
+        return OPTION4;
     }
 
     public static String getAnswer() {
-        return answer;
+        return ANSWER;
     }
 
     public boolean createTBnData(SQLiteDatabase db) {
@@ -103,10 +109,82 @@ public class DBQuestions {
     }
 
     public Cursor getAllQuestionsForChapter (SQLiteDatabase db, int chapterIDV) {
-        String[] columns = {UID, chapterID, year, level, question, option1, option2, option3, option4, answer};
+        String[] columns = {ID + " _id", CHAPTER_ID, YEAR, LEVEL, QUESTION, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER};
         String[] columnValues = {String.valueOf(chapterIDV)};
-        Cursor cursor = db.query(QUESTIONS_TB, columns, chapterID + "=?", columnValues, null, null, null);
+        Cursor cursor = db.query(QUESTIONS_TB, columns, CHAPTER_ID + "=?", columnValues, null, null, null);
 
         return cursor;
+    }
+
+    public int updateData(SQLiteDatabase db, String quesData) {
+        String [] columns = {getID(),QUESTION};
+        int i=0;
+        int id;
+        int chap_id;
+        int year;
+        int level;
+        String question=null;
+        String option1=null;
+        String option2 = null;
+        String option3 = null;
+        String option4 = null;
+        int answer;
+        int pinned;
+
+        Cursor cursor = db.query(QUESTIONS_TB,columns,null,null,null,null,null);
+
+        cursor.moveToLast();
+        int ques_id = cursor.getInt(cursor.getColumnIndex(ID));
+
+        try {
+            Log.d("json:", quesData);
+            JSONArray questions = new JSONArray(quesData);
+            ContentValues ques_values = new ContentValues();
+
+            for (i = 0; i < questions.length(); i++) {
+                JSONObject temp = questions.getJSONObject(i);
+                id = temp.getInt(ID);
+                chap_id = temp.getInt(CHAPTER_ID);
+                year = temp.getInt(YEAR);
+                level = temp.getInt(LEVEL);
+                question = temp.getString(QUESTION);
+                option1 = temp.getString(OPTION1);
+                option2 = temp.getString(OPTION2);
+                option3 = temp.getString(OPTION3);
+                option4 = temp.getString(OPTION4);
+                answer = temp.getInt(ANSWER);
+                pinned = temp.getInt(PINNED);
+
+                ques_values.put(CHAPTER_ID,chap_id);
+                ques_values.put(YEAR, year);
+                ques_values.put(LEVEL, level);
+                ques_values.put(QUESTION, question);
+                ques_values.put(OPTION1, option1);
+                ques_values.put(OPTION2, option2);
+                ques_values.put(OPTION3, option3);
+                ques_values.put(OPTION4, option4);
+                ques_values.put(ANSWER, answer);
+                ques_values.put(PINNED, pinned);
+
+                if ( id > ques_id ) {
+                    /* add new data */
+                    //Log.d("subjects:", "insert - id=" + id + "--sub_name:" + subj_name );
+                    ques_values.put(ID, ++id);
+                    db.insert(QUESTIONS_TB,null, ques_values);
+
+                } else {
+                    /* update existing data */
+                    //Log.d("subjects:", "update - id=" + id + "--sub_name:" + subj_name );
+                    db.update(QUESTIONS_TB,ques_values,ID + "=" + id,null);
+                }
+            }
+
+        } catch (Exception e) {
+            Log.d("JSON", "Exception: converting to json array " + e.toString());
+            return 0;
+        }
+
+        cursor.close();
+        return i;
     }
 }

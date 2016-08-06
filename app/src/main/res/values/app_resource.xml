@@ -3,5 +3,8 @@
     <string name="app_resource_file">com.pivot.dsa.app_resource</string>
     <string name="last_update_date"></string>
     <string name="default_last_update_date">1464719400</string>
-    <string name="subjects_url">http://www.mysoredentalcare.com/test/data.php?mod_date=</string>
+    <string name="subjects_url">http://www.mysoredentalcare.com/test/subjects.php?mod_date=</string>
+    <string name="chapters_url">http://www.mysoredentalcare.com/test/chapters.php?mod_date=</string>
+    <string name="questions_url">http://www.mysoredentalcare.com/test/questions.php?mod_date=</string>
+    <string name="answers_url">http://www.mysoredentalcare.com/test/answers.php?mod_date=</string>
 </resources>

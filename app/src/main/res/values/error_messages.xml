@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sync_subj_failed">Updating Subjects failed !</string>
+    <string name="sync_chap_failed">Updating Chapters failed !</string>
+    <string name="sync_ques_failed">Updating Questions failed !</string>
+    <string name="sync_ans_failed">Updating Answers failed !</string>
+
+    <string name="get_subj_failed">Getting Subjects failed !</string>
+    <string name="get_chap_failed">Getting Chapters failed !</string>
+    <string name="get_ques_failed">Getting Questions failed !</string>
+    <string name="get_ans_failed">Getting Answers failed !</string>
+</resources>

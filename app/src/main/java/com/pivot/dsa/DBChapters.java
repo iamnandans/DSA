@@ -1,9 +1,14 @@
 package com.pivot.dsa;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by shanthan on 3/2/2016.
@@ -11,6 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class DBChapters {
     private String CHAPTERS_TB = "chapters";
     private static String UID = "_id";
+    private static String ID = "id";
     private static String CHAP_NAME = "chap_name";
     private String LEVEL = "chap_level";
     private static String SUBJECT_ID = "subj_id";
@@ -29,10 +35,10 @@ public class DBChapters {
         this.context = context;
         subjects = new DBSubjects(context);
         CREATE_CHAPTERS_TABLE  = "create table " + CHAPTERS_TB + " (" +
-                UID + " integer primary key," +
+                ID + " integer primary key," +
                 SUBJECT_ID + " integer," +
                 CHAP_NAME + " varchar(128), " +
-                "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " + subjects.getSubjectsTb() + "(" + subjects.getUID() + "));";
+                "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " + subjects.getSubjectsTb() + "(" + subjects.getID() + "));";
         DROP_CHAP_TABLE = "drop table if exists " + CHAPTERS_TB;
     }
 
@@ -48,8 +54,8 @@ public class DBChapters {
         return CHAPTERS_TB;
     }
 
-    public static String getUID() {
-        return UID;
+    public static String getID() {
+        return ID;
     }
 
     public static String getSUBJECT_ID() {
@@ -61,7 +67,7 @@ public class DBChapters {
     }
 
     public Cursor getAllChapters(SQLiteDatabase db,int subject_id) {
-        String [] columns = {getUID(),getSUBJECT_ID(), getCHAP_NAME() };
+        String [] columns = {getID() + " _id",getSUBJECT_ID(), getCHAP_NAME() };
         String [] columnValues = {String.valueOf(subject_id)};
         Cursor cursor = db.query(CHAPTERS_TB,columns,SUBJECT_ID + "=?",columnValues,null,null,null);
 
@@ -104,5 +110,49 @@ public class DBChapters {
 
         //db.execSQL(getAllChaptersForSubject());
         return true;
+    }
+
+    public int updateData(SQLiteDatabase db, String chapData) {
+        String [] columns = {getID(),CHAP_NAME};
+        int i=0;
+        int id;
+        int sub_id;
+        String chap_name=null;
+        Cursor cursor = db.query(CHAPTERS_TB,columns,null,null,null,null,null);
+
+        cursor.moveToLast();
+        int chap_id = cursor.getInt(cursor.getColumnIndex(ID));
+
+        try {
+            Log.d("jsonuuuu:", chapData);
+            JSONArray chapters = new JSONArray(chapData);
+            ContentValues chap_values = new ContentValues();
+
+            for (i = 0; i < chapters.length(); i++) {
+                JSONObject temp = chapters.getJSONObject(i);
+                id = temp.getInt(ID);
+                sub_id = temp.getInt(SUBJECT_ID);
+                chap_name = temp.getString(CHAP_NAME);
+                //Log.d("subjectid", "id:" + id);
+                chap_values.put(SUBJECT_ID,sub_id);
+                chap_values.put(CHAP_NAME, chap_name);
+                if ( id > chap_id ) {
+                    //Log.d("chapters:", "insert - id=" + id + "--chap_name:" + chap_name );
+                    chap_values.put(ID, ++id);
+                    db.insert(CHAPTERS_TB,null, chap_values);
+
+                } else {
+                    //Log.d("chapters:", "update - id=" + id + "--chap_name:" + chap_name );
+                    db.update(CHAPTERS_TB,chap_values,ID + "=" + id,null);
+                }
+            }
+            i=10;
+        } catch (Exception e) {
+            Log.d("JSONmmmmmm", "Exception: converting to json array " + e.toString() + e.fillInStackTrace());
+            return 0;
+        }
+
+        cursor.close();
+        return i;
     }
 }

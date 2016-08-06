@@ -10,6 +10,7 @@ public class DBDiagram {
 
     private String DIAGRAM_TB = "diagram";
     private String UID = "_id";
+    private String ID = "id";
     private String questionID = "questionID";
     private String qDiagram = "ques_diagram";
     private String option1Diagram = "opt1Diagram";
@@ -26,7 +27,7 @@ public class DBDiagram {
         this.context = context;
         question = new DBQuestions(this.context);
         CREATE_DIAGRAM_TABLE = "create table " + DIAGRAM_TB + " (" +
-                UID + " integer primary key, " +
+                ID + " integer primary key, " +
                 questionID + " integer, " +
                 qDiagram + " varchar(256), " +
                 option1Diagram + " varchar(256), " +
@@ -34,7 +35,7 @@ public class DBDiagram {
                 option3Diagram + " varchar(256), " +
                 option4Diagram + " varchar(256), " +
                 ansDiagram + " varchar(256), " +
-                "FOREIGN KEY (" + questionID + ") REFERENCES " + question.getQUESTIONS_TB() + "(" + question.getUID() + "));";
+                "FOREIGN KEY (" + questionID + ") REFERENCES " + question.getQUESTIONS_TB() + "(" + question.getID() + "));";
     }
 
     private String DROP_DIAGRAM_TABLE = "drop table if exists " + DIAGRAM_TB;

@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DB_NAME = "DSA";
-    private static final int DB_VERSION = 38;
+    private static final int DB_VERSION = 39;
     private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
@@ -85,5 +85,29 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getAnswerForQuestion (int question) {
         //Cursor cursor =
         return answers.getAnswerForQuestion(gDB,question);
+    }
+
+    public int updateSubjectsData(String subjData) {
+        int retVal = subjects.updateData(gDB, subjData);
+
+        return retVal;
+    }
+
+    public int updateChaptersData(String chapData) {
+        int retVal = chapters.updateData(gDB, chapData);
+
+        return retVal;
+    }
+
+    public int updateQuestionsData(String quesData) {
+        int retVal = questions.updateData(gDB, quesData);
+
+        return retVal;
+    }
+
+    public int updateAnswersData(String ansData) {
+        int retVal = answers.updateData(gDB, ansData);
+
+        return retVal;
     }
 }
