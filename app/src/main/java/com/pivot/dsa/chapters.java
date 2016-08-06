@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,7 +74,7 @@ public class chapters extends AppCompatActivity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //TextView textView = (TextView) view;
         cursor.moveToPosition(position);
-        int chapID = cursor.getInt(cursor.getColumnIndex(DBChapters.getID()));
+        int chapID = cursor.getInt(cursor.getColumnIndex(DBChapters.getUID()));
         subjectIDStatic = subjectID;
         Intent intent = new Intent("com.pivot.dsa.questions");
         intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);

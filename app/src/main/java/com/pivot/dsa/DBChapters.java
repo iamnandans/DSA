@@ -58,6 +58,10 @@ public class DBChapters {
         return ID;
     }
 
+    public static String getUID() {
+        return UID;
+    }
+
     public static String getSUBJECT_ID() {
         return SUBJECT_ID;
     }

@@ -59,6 +59,10 @@ public class DBQuestions {
         return ID;
     }
 
+    public static String getUID() {
+        return UID;
+    }
+
     public static String getChapterID() {
         return CHAPTER_ID;
     }
@@ -131,7 +135,7 @@ public class DBQuestions {
         int answer;
         int pinned;
 
-        Cursor cursor = db.query(QUESTIONS_TB,columns,null,null,null,null,null);
+        Cursor cursor = db.query(QUESTIONS_TB, columns, null, null, null, null, null);
 
         cursor.moveToLast();
         int ques_id = cursor.getInt(cursor.getColumnIndex(ID));
