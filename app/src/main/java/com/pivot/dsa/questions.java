@@ -232,6 +232,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             }
 
         } else if (id == R.id.action_pin ) {
+            int quesNo = getTabSelected();
+
             Message.message(this, "action pin clicked");
         }
         else if ( id == R.id.home ) {

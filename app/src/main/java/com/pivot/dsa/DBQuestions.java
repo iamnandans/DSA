@@ -191,4 +191,9 @@ public class DBQuestions {
         cursor.close();
         return i;
     }
+
+    public int pinQuestion(int quesID, int chapID) {
+
+        return(1);
+    }
 }

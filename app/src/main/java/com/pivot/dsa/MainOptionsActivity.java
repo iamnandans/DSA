@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -137,6 +139,32 @@ public class MainOptionsActivity extends AppCompatActivity
 
         }
 */
+
+        if ( id == R.id.nav_share ) {
+
+            Message.message(this, "Share option selected");
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/html");
+            //sharingIntent.setData(Uri.parse("smsto:"));
+            //sharingIntent.setType("vnd.android-dir/mms-sms");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>This is the text shared.</p>"));
+            //sharingIntent.putExtra("sms_body", "default content");
+            startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            /*Intent intent2 = new Intent(); intent2.setAction(Intent.ACTION_SEND);
+            intent2.setType("text/plain");
+            intent2.putExtra(Intent.EXTRA_TEXT, "Your text here" );
+            startActivity(Intent.createChooser(intent2, "Share via")); */
+            /* Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
+            smsIntent.setType("vnd.android-dir/mms-sms");
+            //smsIntent.putExtra("address","phoneNumber");
+            smsIntent.putExtra("sms_body", "Download DSA application from playstore");
+            startActivity(smsIntent);
+            */
+
+        } else if (id == R.id.nav_rateUS) {
+            AppShare.showRateDialog(this, null);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
