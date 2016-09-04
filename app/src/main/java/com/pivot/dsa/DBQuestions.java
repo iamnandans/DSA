@@ -192,8 +192,14 @@ public class DBQuestions {
         return i;
     }
 
-    public int pinQuestion(int quesID, int chapID) {
-
+    public int updatePin(SQLiteDatabase db,int quesID, int pin_value) {
+        ContentValues ques_values = new ContentValues();
+        ques_values.put(PINNED,pin_value);
+        try {
+            db.update(QUESTIONS_TB, ques_values, PINNED + "=" + pin_value, null);
+        } catch (Exception e ) {
+            Log.d("DB update ERROR", "Error updating pin value for question. " + e.toString());
+        }
         return(1);
     }
 }

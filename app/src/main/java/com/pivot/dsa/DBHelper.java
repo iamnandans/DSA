@@ -111,8 +111,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
-    public int pinQuestion(int quesID, int chapID) {
-
-        return(1);
+    public int updatePin(int quesID, int pin_value) {
+        int ret = questions.updatePin(gDB, quesID, pin_value);
+        return(ret);
     }
 }

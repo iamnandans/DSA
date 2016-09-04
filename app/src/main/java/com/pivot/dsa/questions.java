@@ -232,7 +232,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             }
 
         } else if (id == R.id.action_pin ) {
-            int quesNo = getTabSelected();
+            dbHelper.updatePin(tabQuestionNo,commonDefines.PIN_QUES);
 
             Message.message(this, "action pin clicked");
         }

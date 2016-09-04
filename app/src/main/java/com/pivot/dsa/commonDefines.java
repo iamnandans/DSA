@@ -6,4 +6,6 @@ package com.pivot.dsa;
 public class commonDefines {
     public static final String totalQues="totalQues";
     public static final int noOfOptions=4;
+    public static final int PIN_QUES=1;
+    public static final int UNPIN_QUES=0;
 }
