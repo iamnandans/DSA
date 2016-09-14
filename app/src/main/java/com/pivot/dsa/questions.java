@@ -232,9 +232,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             }
 
         } else if (id == R.id.action_pin ) {
-            dbHelper.updatePin(tabQuestionNo,commonDefines.PIN_QUES);
-
-            Message.message(this, "action pin clicked");
+            //dbHelper.updatePin(tabQuestionNo,commonDefines.PIN_QUES);
+            Message.message(this, "action pin clicked " + tabQuestionNo);
         }
         else if ( id == R.id.home ) {
             /*Intent intent = new Intent();
