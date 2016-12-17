@@ -27,7 +27,8 @@ public class CloudData  {
         HttpClient httpclient = new DefaultHttpClient();
         String url;
 
-        //String url = "http://www.mysoredentalcare.com/test/data.php?mod_date=" + last_update_date;
+        //String url = "http://www.mysoredentalcare.com/test/data_orig.php?mod_date=" + last_update_date;
+
         if ( dataType == R.integer.subj_id )
             url = ctx.getString(R.string.subjects_url) + last_update_date;
         else if ( dataType == R.integer.chap_id )
@@ -40,6 +41,7 @@ public class CloudData  {
             return null;
         }
 
+        Log.d("hhtprequest", url);
         // Prepare a request object
         HttpGet httpget = new HttpGet(url);
 

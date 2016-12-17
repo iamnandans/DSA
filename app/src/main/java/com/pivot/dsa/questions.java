@@ -101,6 +101,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
                 ListView lv = (ListView) findViewById(R.id.quesOptions);
                 int tabPosition = tab.getPosition();
 
+                //Log.d("tabposition", "selected tab position is " + tabPosition );
                 if ( optionSelected[tabPosition] != -1 ) {
                     for (int count=0; count < noOfChoices; count++ ) {
                         if ( count == optionSelected[tabPosition] )
@@ -114,6 +115,9 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
                         lv.getChildAt(count).setSelected(false);
                     }
                 }
+
+                TextView question = (TextView) findViewById(R.id.question);
+                question.setText(cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion())));
             }
 
             @Override
@@ -233,7 +237,25 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
         } else if (id == R.id.action_pin ) {
             //dbHelper.updatePin(tabQuestionNo,commonDefines.PIN_QUES);
-            Message.message(this, "action pin clicked " + tabQuestionNo);
+            //Message.message(this, "action pin clicked " + tabQuestionNo + " -- pin value is  " + cursor.getInt(2));
+            if (cursor == null) {
+                Message.message(this, "cursor is null ");
+            } else {
+                //cursor.move(getTabSelected());
+                cursor.moveToPosition(getTabSelected());
+                //int temp123 = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+                //Message.message(this, "action pin clicked - - " + cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())) + " ..." + cursor.getInt(cursor.getColumnIndex(DBQuestions.getPinValue()))  );
+                if (cursor.getInt(cursor.getColumnIndex(DBQuestions.getPinValue())) == 1 ) {
+                    dbHelper.updatePin(cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())), 0);
+                    Message.message(this, getString(R.string.remove_ques_fav)) ;
+                } else {
+                    dbHelper.updatePin(cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())), 1);
+                    Message.message(this, getString(R.string.add_ques_fav)) ;
+                }
+                /* pin value is changes as such data needs to be refreshed in cursor. So reloading the data */
+                cursor = dbHelper.getAllQuestionsForChapter(chapterID);
+                cursor.moveToPosition(getTabSelected());
+            }
         }
         else if ( id == R.id.home ) {
             /*Intent intent = new Intent();
@@ -310,6 +332,7 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
         selectedTab = ques.getTabSelected();
         Fragment fragment = new fragmentQuestions();
         Bundle args = new Bundle();
+        //Message.message(context, "selected tab is -- " + selectedTab );
         args.putInt(fragmentQuestions.QUES_NO, selectedTab); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.CHAP_NO, chapterID); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.SUB_NO, subjectID); // Our object is just an integer :-P

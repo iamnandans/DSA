@@ -1,5 +1,6 @@
 package com.pivot.dsa;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class AppShare {
 
         LinearLayout ll = new LinearLayout(mContext);
         ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setMinimumWidth(440);
 
         TextView tv = new TextView(mContext);
         tv.setText("If you enjoy using " + APP_TITLE + ", please take a moment to rate it. Thanks for your support!");
@@ -71,14 +73,14 @@ public class AppShare {
         });
         ll.addView(b1);
 
-        /* Button b2 = new Button(mContext);
-        b2.setText("Remind me later");
-        b2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        ll.addView(b2); */
+        // Button b2 = new Button(mContext);
+        //b2.setText("Remind me later");
+        //b2.setOnClickListener(new View.OnClickListener() {
+          //  public void onClick(View v) {
+            //    dialog.dismiss();
+            //}
+        //});
+        //ll.addView(b2);
 
         Button b3 = new Button(mContext);
         b3.setText("No, thanks");

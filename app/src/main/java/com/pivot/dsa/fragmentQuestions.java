@@ -113,7 +113,7 @@ public class fragmentQuestions extends Fragment {
         //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
         String [] questionOptions1 = new String[maxQuesOpt];
 
-        Message.message(getActivity(), "question no is " + questionNo);
+        Message.message(getActivity(), "nandan - question no is " + questionNo);
         if ( questionNo != -1 ) {
             dbHelper = new DBHelper(getActivity());
             cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
@@ -121,7 +121,10 @@ public class fragmentQuestions extends Fragment {
             //if ( cursor == null )
             //cursor.moveToPosition(questionNo-1);
             cursor.moveToFirst();
+        } else {
+            cursor.move(questionNo);
         }
+
         //String[] col = cursor.getColumnNames();
         final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         int answerOption = cursor.getInt(cursor.getColumnIndex(DBQuestions.getAnswer()));

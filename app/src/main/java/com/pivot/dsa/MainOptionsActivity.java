@@ -162,7 +162,8 @@ public class MainOptionsActivity extends AppCompatActivity
             */
 
         } else if (id == R.id.nav_rateUS) {
-            AppShare.showRateDialog(this, null);
+            //AppShare.showRateDialog(this, null);
+            RateThisApp.init(new RateThisApp.Config(3, 5));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

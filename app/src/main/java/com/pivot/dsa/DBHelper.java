@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DB_NAME = "DSA";
-    private static final int DB_VERSION = 42;
+    private static final int DB_VERSION = 43;
     private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
@@ -111,8 +111,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
-    public int updatePin(int quesID, int pin_value) {
-        int ret = questions.updatePin(gDB, quesID, pin_value);
+    public int updatePin(int quesID, int pinValue) {
+        int ret = questions.updatePin(gDB, quesID, pinValue);
         return(ret);
     }
 }

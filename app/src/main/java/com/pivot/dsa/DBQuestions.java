@@ -91,6 +91,8 @@ public class DBQuestions {
         return ANSWER;
     }
 
+    public static String getPinValue() { return PINNED; }
+
     public boolean createTBnData(SQLiteDatabase db) {
         db.execSQL(CREATE_QUESTIONS_TABLE);
 
@@ -113,7 +115,7 @@ public class DBQuestions {
     }
 
     public Cursor getAllQuestionsForChapter (SQLiteDatabase db, int chapterIDV) {
-        String[] columns = {ID + " _id", CHAPTER_ID, YEAR, LEVEL, QUESTION, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER};
+        String[] columns = {ID + " _id", CHAPTER_ID, YEAR, LEVEL, QUESTION, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER, PINNED };
         String[] columnValues = {String.valueOf(chapterIDV)};
         Cursor cursor = db.query(QUESTIONS_TB, columns, CHAPTER_ID + "=?", columnValues, null, null, null);
 
@@ -192,11 +194,11 @@ public class DBQuestions {
         return i;
     }
 
-    public int updatePin(SQLiteDatabase db,int quesID, int pin_value) {
+    public int updatePin(SQLiteDatabase db,int quesID, int pinValue ) {
         ContentValues ques_values = new ContentValues();
-        ques_values.put(PINNED,pin_value);
+        ques_values.put(PINNED,pinValue);
         try {
-            db.update(QUESTIONS_TB, ques_values, PINNED + "=" + pin_value, null);
+            db.update(QUESTIONS_TB, ques_values, ID + "=" + quesID, null);
         } catch (Exception e ) {
             Log.d("DB update ERROR", "Error updating pin value for question. " + e.toString());
         }
