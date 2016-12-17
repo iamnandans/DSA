@@ -19,6 +19,7 @@ public class DBSubjects {
     private String UID = "_id";
     private String ID = "id";
 
+
     private String SUB_NAME = "sub_name";
     private String LEVEL = "sub_level";
     /* private String CREATE_SUB_TABLE = "create table " + SUBJECTS_TB + " (" + UID +
