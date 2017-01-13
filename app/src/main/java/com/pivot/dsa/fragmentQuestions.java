@@ -40,23 +40,24 @@ public class fragmentQuestions extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static final String QUES_NO="0";
-    public static final String CHAP_NO="0";
-    public static final String SUB_NO="0";
+    public static final String QUES_NO="QUES_NO";
+    public static final String CHAP_NO="CHAP_NO";
+    public static final String SUB_NO="SUB_NO";
 
     static DBHelper dbHelper;
     static Cursor cursor;
-    static int chapterNo;
-    static int subjectNo;
+    int chapterNo;
+    int subjectNo;
     static ArrayList<SingleRow> list;
     SingleRow item=null;
     int maxQuesOpt=0;
     Bundle args = getArguments();
-    static int questionNo = -1;
+    int questionNo = -1;
     QuesAdapter quesAdapter;
     ListView listView;
     View rootView;
     questions ques;
+    static int isInitialized=0;
 
 
     public fragmentQuestions() {
@@ -88,10 +89,10 @@ public class fragmentQuestions extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+/*        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
@@ -109,23 +110,15 @@ public class fragmentQuestions extends Fragment {
         ques = (questions) getActivity();
         int selectedQues = ques.getTabSelected();
 
-        String [] questionOptions = {"A. ", "B. ", "C. ", "D. "  };
-        //String [] questionOptions1 = { "this is option A", "this is option B", "this is option C", "this is option D"};
-        String [] questionOptions1 = new String[maxQuesOpt];
-
-        Message.message(getActivity(), "nandan - question no is " + questionNo);
-        if ( questionNo != -1 ) {
+        if ( isInitialized == 0 ) {
             dbHelper = new DBHelper(getActivity());
             cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
             //TODO : have to handle this condition
             //if ( cursor == null )
-            //cursor.moveToPosition(questionNo-1);
-            cursor.moveToFirst();
-        } else {
-            cursor.move(questionNo);
+            isInitialized=1;
         }
 
-        //String[] col = cursor.getColumnNames();
+        cursor.moveToPosition( questionNo ) ;
         final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         int answerOption = cursor.getInt(cursor.getColumnIndex(DBQuestions.getAnswer()));
 
@@ -136,7 +129,6 @@ public class fragmentQuestions extends Fragment {
         ques.setQuestionNumber(dbQuesID);
 
         ques.setAnswerForQuestion(answerOption);
-        //int count=0;
 
         listView = (ListView) rootView.findViewById(R.id.quesOptions);
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
@@ -218,6 +210,7 @@ class QuesAdapter extends BaseAdapter {
         //cursor.moveToPosition(questionNo);
 
         int quesID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+
         /*
         String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
         String option1 = cursor.getString(cursor.getColumnIndex(DBQuestions.getOption1()));

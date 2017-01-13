@@ -116,8 +116,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
                     }
                 }
 
-                TextView question = (TextView) findViewById(R.id.question);
-                question.setText(cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion())));
+                //TextView question = (TextView) findViewById(R.id.question);
+                //question.setText(cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion())));
             }
 
             @Override
@@ -327,15 +327,13 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        int selectedTab;
-        questions ques = (questions) context;
-        selectedTab = ques.getTabSelected();
-        Fragment fragment = new fragmentQuestions();
         Bundle args = new Bundle();
-        //Message.message(context, "selected tab is -- " + selectedTab );
-        args.putInt(fragmentQuestions.QUES_NO, selectedTab); // Our object is just an integer :-P
+
+        args.putInt(fragmentQuestions.QUES_NO, (i) ); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.CHAP_NO, chapterID); // Our object is just an integer :-P
         args.putInt(fragmentQuestions.SUB_NO, subjectID); // Our object is just an integer :-P
+
+        Fragment fragment = new fragmentQuestions();
         fragment.setArguments(args);
 
         return fragment;
