@@ -107,6 +107,8 @@ public class fragmentQuestions extends Fragment {
         chapterNo = getArguments().getInt(CHAP_NO);
         subjectNo = getArguments().getInt(SUB_NO);
 
+        //Log.d("nandan123" , "chapter id is -- " + chapterNo);
+
         ques = (questions) getActivity();
         int selectedQues = ques.getTabSelected();
 
@@ -116,7 +118,15 @@ public class fragmentQuestions extends Fragment {
             //TODO : have to handle this condition
             //if ( cursor == null )
             isInitialized=1;
+        } else {
+            int currentChapNo = cursor.getInt(cursor.getColumnIndex(DBQuestions.getChapterID()));
+
+            if ( currentChapNo != chapterNo ) {
+                dbHelper = new DBHelper(getActivity());
+                cursor = dbHelper.getAllQuestionsForChapter(chapterNo);
+            }
         }
+
 
         cursor.moveToPosition( questionNo ) ;
         final String question = cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion()));
@@ -131,17 +141,20 @@ public class fragmentQuestions extends Fragment {
         ques.setAnswerForQuestion(answerOption);
 
         listView = (ListView) rootView.findViewById(R.id.quesOptions);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1, questionOptions);
         //listView.setAdapter(adapter);
         //listView.setOnItemClickListener(onItemClick(rootView.findViewById(android.R.id.content)));
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                //Log.d("nandan ", "position is " + position);
                 //questions ques = (questions) getActivity();
                 ques.optionSelected(position);
                 view.setSelected(true);
             }
         });
+
         quesAdapter = new QuesAdapter(getActivity(), cursor, selectedQues);
         listView.setAdapter(quesAdapter);
 

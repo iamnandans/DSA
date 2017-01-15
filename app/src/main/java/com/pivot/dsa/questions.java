@@ -27,6 +27,10 @@ import android.widget.Toast;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.Arrays;
 
 public class questions extends AppCompatActivity implements fragmentQuestions.OnFragmentInteractionListener, gotoQuesDialog.Communicator {
@@ -38,7 +42,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     private static QuesAdapter quesAdapter;
     private int subjectID;
     private int chapterID;
-    private String chapter_name=null;
+    private String chapter_name = null;
     //TODO - initialize the array with no of questions after retrieving from database.
     int optionSelected[];
     final int noOfChoices = commonDefines.noOfOptions;
@@ -47,11 +51,16 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
     DBHelper dbHelper;
     Cursor cursor;
     DBAnswers dbAnswers;
-    private int tabQuestionNo=-1;
-    private int correctAnsOption=-1;
+    private int tabQuestionNo = -1;
+    private int correctAnsOption = -1;
 
     QuestionsPagerAdapter mQuestionsPagerAdapter;
-    private BottomSheetDialog dialog ;
+    private BottomSheetDialog dialog;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         chapterID = getIntent().getExtras().getInt(this.getResources().getStringArray(R.array.ChaptersTB)[0]);
         chapter_name = getIntent().getExtras().getString(this.getResources().getStringArray(R.array.ChaptersTB)[2]);
 
+        //Log.d("nandan123 ", "chapter Id is " + chapterID);
+
         this.setTitle(chapter_name);
 
         dbHelper = new DBHelper(this);
@@ -76,15 +87,15 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         totalQuestions = cursor.getCount();
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager(), this, subjectID, chapterID, cursor );
+        mQuestionsPagerAdapter = new QuestionsPagerAdapter(getSupportFragmentManager(), this, subjectID, chapterID, cursor);
         viewPager.setAdapter(mQuestionsPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mTabLayout.setTabsFromPagerAdapter(mQuestionsPagerAdapter);
 
-        mTabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-
+        //viewPager.setOnPageChangeListener();
+        //mTabLayout.setupWithViewPager(viewPager);
 
         //Message.message(this, "chapter id " + chapterID);
         /* home button is disabled as of now, as event handling could not be done. Handling the
@@ -98,44 +109,32 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                ListView lv = (ListView) findViewById(R.id.quesOptions);
-                int tabPosition = tab.getPosition();
-
-                //Log.d("tabposition", "selected tab position is " + tabPosition );
-                if ( optionSelected[tabPosition] != -1 ) {
-                    for (int count=0; count < noOfChoices; count++ ) {
-                        if ( count == optionSelected[tabPosition] )
-                            lv.getChildAt(count).setSelected(true);
-                        else
-                            lv.getChildAt(count).setSelected(false);
-                    }
-                }
-                else {
-                    for (int count=0; count < noOfChoices; count++ ) {
-                        lv.getChildAt(count).setSelected(false);
-                    }
-                }
-
-                //TextView question = (TextView) findViewById(R.id.question);
-                //question.setText(cursor.getString(cursor.getColumnIndex(DBQuestions.getQuestion())));
+                //Log.d("nandan", "on tab selected called-" + tab.getPosition() );
+                //mTabLayout.setupWithViewPager(viewPager);
+                viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                //Log.d("nandan", "on tab unselected called-" + tab.getPosition());
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                //Log.d("nandan", "on tab reselected called-" + tab.getPosition());
             }
         });
 
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void optionSelected(int selectedOptionNo) {
         int tabNo = mTabLayout.getSelectedTabPosition();
         optionSelected[tabNo] = selectedOptionNo;
+        //Log.d("nandan", "tab-" + tabNo + ", optionNo-" + selectedOptionNo);
     }
 
     /*
@@ -223,9 +222,9 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             //TabLayout.Tab tab = mTabLayout.getTabAt(5);
             //tab.select();
 
-            if ( totalQuestions == 0 ) {
-                Toast.makeText(this, getResources().getString(R.string.ques_zeo_question) , Toast.LENGTH_LONG).show();
-            } else if ( totalQuestions < 3 ) {
+            if (totalQuestions == 0) {
+                Toast.makeText(this, getResources().getString(R.string.ques_zeo_question), Toast.LENGTH_LONG).show();
+            } else if (totalQuestions < 3) {
                 Toast.makeText(this, getResources().getString(R.string.ques_total_questions), Toast.LENGTH_LONG).show();
             } else {
                 gotoQuesDialog quesDialog = new gotoQuesDialog();
@@ -235,53 +234,79 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
                 quesDialog.show(getFragmentManager(), "Select Question Alert");
             }
 
-        } else if (id == R.id.action_pin ) {
+        } else if (id == R.id.action_pin) {
             //dbHelper.updatePin(tabQuestionNo,commonDefines.PIN_QUES);
             //Message.message(this, "action pin clicked " + tabQuestionNo + " -- pin value is  " + cursor.getInt(2));
             if (cursor == null) {
-                Message.message(this, "cursor is null ");
+                Message.message(this, "Could not pin the Question");
+            } else if (cursor.getCount() < 1) {
+                Message.message(this, "Incorrect Question");
             } else {
-                //cursor.move(getTabSelected());
-                cursor.moveToPosition(getTabSelected());
-                //int temp123 = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
-                //Message.message(this, "action pin clicked - - " + cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())) + " ..." + cursor.getInt(cursor.getColumnIndex(DBQuestions.getPinValue()))  );
-                if (cursor.getInt(cursor.getColumnIndex(DBQuestions.getPinValue())) == 1 ) {
+                int selectedTab=0;
+
+                /* initially tab selected will have -1 value */
+                if ( -1 == getTabSelected() ) {
+                    selectedTab = 0;
+                } else {
+                    selectedTab = getTabSelected();
+                }
+
+                cursor.moveToPosition(selectedTab);
+                //Log.d("nandan123", "question id is " + cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())));
+                //Log.d("nandan123", "question id is " + cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())));
+                if (cursor.getInt(cursor.getColumnIndex(DBQuestions.getPinValue())) == 1) {
                     dbHelper.updatePin(cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())), 0);
-                    Message.message(this, getString(R.string.remove_ques_fav)) ;
+                    Message.message(this, getString(R.string.remove_ques_fav));
                 } else {
                     dbHelper.updatePin(cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID())), 1);
-                    Message.message(this, getString(R.string.add_ques_fav)) ;
+                    Message.message(this, getString(R.string.add_ques_fav));
                 }
+
                 /* pin value is changes as such data needs to be refreshed in cursor. So reloading the data */
                 cursor = dbHelper.getAllQuestionsForChapter(chapterID);
                 cursor.moveToPosition(getTabSelected());
             }
-        }
-        else if ( id == R.id.home ) {
+
+        } else if (id == R.id.home) {
             /*Intent intent = new Intent();
             intent.putExtra(this.getResources().getStringArray(R.array.SubjectsTB)[0],subjectID);
             setResult(RESULT_OK, intent);*/
             //NavUtils.navigateUpFromSameTask(this);
             //super.onBackPressed();
             //Message.message(this, "testing home button");
-        }
-        else if ( id == R.id.action_ans ) {
-            String ans_desc=null;
+        } else if (id == R.id.action_ans) {
+            String ans_desc = null;
             Cursor cursorAns = null;
+            int selectedTab=0;
 
-            if ( correctAnsOption == -1 ) {
-                Toast.makeText(this, getResources().getString(R.string.ques_invalid), Toast.LENGTH_LONG).show();
+            /* initially tab selected will have -1 value */
+            if ( -1 == getTabSelected() ) {
+                selectedTab = 0;
             } else {
+                selectedTab = getTabSelected();
+            }
 
-                ans_desc = "(" + correctAnsOption + ") " + getResources().getString(R.string.ques_correct_option) + "\n \n";
+            if ( cursor == null ) {
+                Message.message(this, "Could not find explanation for answer");
+            } else if (cursor.getCount() < 1) {
+                Message.message(this, "Incorrect Question");
+            } else {
+                cursor.moveToPosition(selectedTab);
+
                 try {
-                    cursorAns = dbHelper.getAnswerForQuestion(tabQuestionNo);
-                    String[] col = cursorAns.getColumnNames();
+                    int questionID=0;
+                    questionID = cursor.getInt(cursor.getColumnIndex(DBQuestions.getUID()));
+                    //Log.d("nandan123", "question id is " + questionID);
+                    cursorAns = dbHelper.getAnswerForQuestion(questionID);
                     cursorAns.moveToFirst();
+                    ans_desc = "(" + cursor.getInt(cursor.getColumnIndex(DBQuestions.getAnswer())) + ") " + getResources().getString(R.string.ques_correct_option) + "\n \n";
                     ans_desc = ans_desc + cursorAns.getString(cursorAns.getColumnIndex(DBAnswers.getAnsDesc()));
+
                 } catch (Exception e) {
-                    //cursorAns.close();
-                    //ans_desc = ans_desc + "Could not find answer description";
+                    if ( cursorAns !=  null ) {
+                        cursorAns.close();
+                    }
+                    ans_desc = ans_desc + "Could not find answer description";
                 }
                 View view = getLayoutInflater().inflate(R.layout.answer_bottomsheet, null);
                 TextView tv = (TextView) view.findViewById(R.id.ans_text);
@@ -293,7 +318,6 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
                 dialog.show();
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -306,6 +330,46 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         //Toast.makeText(this, "finally ---- " + message, Toast.LENGTH_SHORT).show();
         TabLayout.Tab tab = mTabLayout.getTabAt(quesNo);
         tab.select();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "questions Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.pivot.dsa/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "questions Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.pivot.dsa/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
 
@@ -330,8 +394,10 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
         Bundle args = new Bundle();
 
         args.putInt(fragmentQuestions.QUES_NO, (i) ); // Our object is just an integer :-P
-        args.putInt(fragmentQuestions.CHAP_NO, chapterID); // Our object is just an integer :-P
-        args.putInt(fragmentQuestions.SUB_NO, subjectID); // Our object is just an integer :-P
+        args.putInt(fragmentQuestions.CHAP_NO, this.chapterID); // Our object is just an integer :-P
+        args.putInt(fragmentQuestions.SUB_NO, this.subjectID); // Our object is just an integer :-P
+
+        //Log.d("nandan123" , "chapter id is -- " + this.chapterID);
 
         Fragment fragment = new fragmentQuestions();
         fragment.setArguments(args);
