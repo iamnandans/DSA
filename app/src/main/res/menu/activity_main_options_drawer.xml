@@ -27,8 +27,8 @@
             android:title="Ques Paper" />
         <item android:id="@+id/nav_takeTest" android:icon="@mipmap/ic_tt"
             android:title="Take Test" />
-        <item android:id="@+id/nav_syncDate" android:icon="@mipmap/ic_sync_data"
-            android:title="Sync Data" />
+        <!-- <item android:id="@+id/nav_syncDate" android:icon="@mipmap/ic_sync_data"
+            android:title="Sync Data" /> -->
         <item android:id="@+id/nav_favourite" android:icon="@mipmap/ic_pin"
             android:title="Favourite Questions" />
     </group>

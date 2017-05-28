@@ -55,6 +55,7 @@ public class MainOptionsActivity extends AppCompatActivity
     private Handler progressBarbHandler = new Handler();
     private long fileSize = 0;
     private String last_update_date = null;
+    private commonDefines commonDef = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class MainOptionsActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_options);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        commonDef = new commonDefines();
 
         /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -111,9 +113,11 @@ public class MainOptionsActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
-            startSyncProcess();
-            Message.message(this, "Sync buttoDMEPS7235Cn clicked.....action yet to be implemented");
-            return true;
+            if ( commonDef.getUserConfirmation(this) ) {
+                startSyncProcess();
+                Message.message(this, "Sync button clicked.....action yet to be implemented");
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -139,6 +143,21 @@ public class MainOptionsActivity extends AppCompatActivity
 
         }
 */
+        if ( id == R.id.nav_pQPaper ) {
+            Message.message(this, "Previous year question paper selected");
+            Bundle args = new Bundle();
+            ListView subjectList;
+            subjectList = (ListView) findViewById(R.id.subListView);
+            subjectYear subYear = new subjectYear();
+
+            String subjectArray[] = new String[subjectList.getCount()];
+            for ( int i=0; i < subjectList.getCount(); i ++ ) {
+                subjectArray[i] = subjectList.getChildAt(i).toString();
+            }
+            args.putStringArray(commonDefines.SUBJECTSLIST, subjectArray);
+            subYear.setArguments(args);
+            subYear.show(getFragmentManager(),getString(R.string.subject_year_dialog_header));
+        }
 
         if ( id == R.id.nav_share ) {
 
@@ -227,9 +246,7 @@ public class MainOptionsActivity extends AppCompatActivity
     }
 
     private void startSyncProcess () {
-        /* http://www.tutorialspoint.com/android/android_progress_circle.htm
-
-         */
+        /* http://www.tutorialspoint.com/android/android_progress_circle.htm */
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(false);
         progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
