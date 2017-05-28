@@ -55,6 +55,7 @@ public class MainOptionsActivity extends AppCompatActivity
     private Handler progressBarbHandler = new Handler();
     private long fileSize = 0;
     private String last_update_date = null;
+    private commonDefines commonDef = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class MainOptionsActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_options);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        commonDef = new commonDefines();
 
         /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -111,9 +113,11 @@ public class MainOptionsActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sync) {
-            startSyncProcess();
-            Message.message(this, "Sync buttoDMEPS7235Cn clicked.....action yet to be implemented");
-            return true;
+            if ( commonDef.getUserConfirmation() ) {
+                startSyncProcess();
+                Message.message(this, "Sync button clicked.....action yet to be implemented");
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -227,9 +231,7 @@ public class MainOptionsActivity extends AppCompatActivity
     }
 
     private void startSyncProcess () {
-        /* http://www.tutorialspoint.com/android/android_progress_circle.htm
-
-         */
+        /* http://www.tutorialspoint.com/android/android_progress_circle.htm */
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(false);
         progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
