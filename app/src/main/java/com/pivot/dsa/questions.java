@@ -1,31 +1,22 @@
 package com.pivot.dsa;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -37,24 +28,19 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
     ViewPager viewPager;
     TabLayout mTabLayout;
-    private static RecyclerView recyclerView;
-    private static questionsAdapter qAdapter;
-    private static QuesAdapter quesAdapter;
-    private int subjectID;
-    private int chapterID;
-    private String chapter_name = null;
     //TODO - initialize the array with no of questions after retrieving from database.
     int optionSelected[];
-    final int noOfChoices = commonDefines.noOfOptions;
     //TODO: should be initialized to total questions from database
     int totalQuestions = 0;
     DBHelper dbHelper;
     Cursor cursor;
     DBAnswers dbAnswers;
+    QuestionsPagerAdapter mQuestionsPagerAdapter;
+    private int subjectID;
+    private int chapterID;
+    private String chapter_name = null;
     private int tabQuestionNo = -1;
     private int correctAnsOption = -1;
-
-    QuestionsPagerAdapter mQuestionsPagerAdapter;
     private BottomSheetDialog dialog;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -109,7 +95,7 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //Log.d("nandan", "on tab selected called-" + tab.getPosition() );
+//                Log.d("nandan", "on tab selected called - " + tab.getPosition() + " -- " + optionSelected[tab.getPosition()]);
                 //mTabLayout.setupWithViewPager(viewPager);
                 viewPager.setCurrentItem(tab.getPosition());
             }
@@ -125,6 +111,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
             }
         });
 
+        //TabLayout.Tab tab = mTabLayout.getTabAt(0);
+        //tab.select();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -133,8 +121,8 @@ public class questions extends AppCompatActivity implements fragmentQuestions.On
 
     public void optionSelected(int selectedOptionNo) {
         int tabNo = mTabLayout.getSelectedTabPosition();
+//        Log.d("nandan", "tab-" + tabNo + ", optionNo-" + selectedOptionNo);
         optionSelected[tabNo] = selectedOptionNo;
-        //Log.d("nandan", "tab-" + tabNo + ", optionNo-" + selectedOptionNo);
     }
 
     /*
@@ -401,7 +389,6 @@ class QuestionsPagerAdapter extends FragmentStatePagerAdapter {
 
         Fragment fragment = new fragmentQuestions();
         fragment.setArguments(args);
-
         return fragment;
     }
 

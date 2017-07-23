@@ -29,8 +29,9 @@ public class subjectYear extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int totalQuestions = getArguments().getInt(commonDefines.SUBJECTSLIST);
-        String [] subList = getArguments().getStringArray(commonDefines.SUBJECTSLIST);
+        //int totalQuestions = getArguments().getInt(commonDefines.SUBJECTSLIST);
+        //String [] subList = getArguments().getStringArray(commonDefines.SUBJECTSLIST);
+        String[] subList = new String[10];
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //builder.setTitle(R.string.gotoQuesDialogTitle);
         LayoutInflater inflater = getActivity().getLayoutInflater();

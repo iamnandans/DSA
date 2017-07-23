@@ -48,5 +48,7 @@
     -->
     <string name="subj_upto_date">Nothing to update</string>
     <string name="subj_updated">Subjects Updated</string>
+    <string name="sync_confirmation"> Continue with Sync Process ?</string>
+    <string name="sync_comp">Syncroniztion completed successfully</string>
 
 </resources>
