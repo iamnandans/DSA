@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SimpleCursorAdapter;
@@ -64,11 +63,8 @@ public class SubjectYear extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String subSelected = ((Cursor) spinnerSubject.getSelectedItem()).getString(1).toString();
-                //spinnerSubject.getSelectedItemId()
                 String yearSelected = ((Cursor) spinnerYear.getSelectedItem()).getString(1).toString();
-                //communicator.subjectYear(subSelected,yearSelected);
-                //Message.message(getActivity(), "Select subject is " + subSelected + ", year " + yearSelected);
-                Log.d("nandan123", "Select subject is " + subSelected + ", year " + yearSelected);
+                //Log.d("nandan123", "Select subject is " + subSelected + ", year " + yearSelected);
                 communicator.subjectYear(subSelected, yearSelected);
             }
         });
