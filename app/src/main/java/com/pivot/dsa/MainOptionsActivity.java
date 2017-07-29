@@ -30,7 +30,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 public class MainOptionsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener, SubjectYear.Communicator {
 
     DBHelper dbHelper;
     int MAX_SUBJECTS = 32;
@@ -125,7 +125,7 @@ public class MainOptionsActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-/*        if (id == R.id.nav_camara) {
+/*       if (id == R.id.nav_camara) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -139,8 +139,10 @@ public class MainOptionsActivity extends AppCompatActivity
 
         }
 */
-
-        if ( id == R.id.nav_share ) {
+        if (id == R.id.nav_pQPaper) {
+            SubjectYear subYear = new SubjectYear();
+            subYear.show(getFragmentManager(), getResources().getString(R.string.subjectYear));
+        } else if (id == R.id.nav_share) {
 
             Message.message(this, "Share option selected");
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -169,6 +171,10 @@ public class MainOptionsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void subjectYear(String subject, String year) {
+        Log.d("nandan123-1", "Select subject is " + subject + ", year " + year);
     }
 
     @Override

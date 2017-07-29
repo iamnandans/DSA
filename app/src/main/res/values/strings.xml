@@ -17,5 +17,8 @@
 
     <string name="ok">Ok</string>
     <string name="gotoQuesDialogTitle">Goto Question</string>
+    <string name="subjectYear">Select Subject and Year</string>
+    <string name="selectSubject">Select the Subject:</string>
+    <string name="selectYear">Select the Year:</string>
 
 </resources>

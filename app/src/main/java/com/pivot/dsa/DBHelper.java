@@ -11,15 +11,15 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    private Context context;
     private static final String DB_NAME = "DSA";
     private static final int DB_VERSION = 43;
-    private SQLiteDatabase gDB;
     DBSubjects subjects ;
     DBChapters chapters ;
     DBQuestions questions ;
     DBDiagram diagram;
     DBAnswers answers;
+    private Context context;
+    private SQLiteDatabase gDB;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -79,6 +79,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllQuestionsForChapter(int chapterID) {
         Cursor cursor = questions.getAllQuestionsForChapter(gDB, chapterID);
+        return cursor;
+    }
+
+    public Cursor getLast5Years() {
+        Cursor cursor = questions.getLast5Years(gDB);
         return cursor;
     }
 

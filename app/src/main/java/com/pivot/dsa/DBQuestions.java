@@ -13,11 +13,10 @@ import org.json.JSONObject;
  * Created by shanthan on 3/6/2016.
  */
 public class DBQuestions {
-    private String QUESTIONS_TB = "questions";
+    public static String YEAR = "year";
     private static String UID = "_id";
     private static String ID = "id";
     private static String CHAPTER_ID = "chapterID";
-    private static String YEAR = "year";
     private static String LEVEL = "level";
     private static String QUESTION = "question";
     private static String OPTION1 = "option1";
@@ -26,9 +25,11 @@ public class DBQuestions {
     private static String OPTION4 = "option4";
     private static String ANSWER = "answer";
     private static String PINNED = "pinned";
+    private String QUESTIONS_TB = "questions";
     private Context context;
     private DBChapters chapters;
     private String CREATE_QUESTIONS_TABLE;
+    private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
 
     DBQuestions(Context context) {
         this.context = context;
@@ -47,12 +48,6 @@ public class DBQuestions {
                 ANSWER + " integer, " +
                 PINNED + " integer, " +
                 "FOREIGN KEY (" + CHAPTER_ID + ") REFERENCES " + chapters.getChaptersTb() + "(" + chapters.getID() + "));";
-    }
-
-    private String DROP_QUESTIONS_TABLE = "drop table if exists " + QUESTIONS_TB;
-
-    public String getQUESTIONS_TB() {
-        return QUESTIONS_TB;
     }
 
     public static String getID() {
@@ -93,6 +88,14 @@ public class DBQuestions {
 
     public static String getPinValue() { return PINNED; }
 
+    public static String getYEAR() {
+        return YEAR;
+    }
+
+    public String getQUESTIONS_TB() {
+        return QUESTIONS_TB;
+    }
+
     public boolean createTBnData(SQLiteDatabase db) {
         db.execSQL(CREATE_QUESTIONS_TABLE);
 
@@ -118,6 +121,14 @@ public class DBQuestions {
         String[] columns = {ID + " _id", CHAPTER_ID, YEAR, LEVEL, QUESTION, OPTION1, OPTION2, OPTION3, OPTION4, ANSWER, PINNED };
         String[] columnValues = {String.valueOf(chapterIDV)};
         Cursor cursor = db.query(QUESTIONS_TB, columns, CHAPTER_ID + "=?", columnValues, null, null, null);
+
+        return cursor;
+    }
+
+    public Cursor getLast5Years(SQLiteDatabase db) {
+        Cursor cursor = null;
+        String[] columns = {getID() + " _id", YEAR};
+        cursor = db.query(true, QUESTIONS_TB, columns, null, null, YEAR, null, YEAR + " desc", "5");
 
         return cursor;
     }

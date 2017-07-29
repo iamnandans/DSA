@@ -1,41 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="0dp">
 
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/spSubYear"
-        android:paddingLeft="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/tvSub"
+    <TextView
+        android:id="@+id/TVSubjectYear"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAppBar"
+        android:padding="20dp"
+        android:text="@string/subjectYear"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="15dp" />
+
+    <Spinner
+        android:id="@+id/spSub"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/spYear"
+        android:layout_alignEnd="@+id/spYear"
+        android:layout_alignRight="@+id/spYear"
+        android:layout_alignTop="@+id/tvSub"
+        android:layout_toEndOf="@+id/tvSub"
+        android:layout_toRightOf="@+id/tvSub"
+        android:gravity="left"
+        android:paddingRight="5dp"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFDDCC"
+        android:textSize="5sp" />
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Select the Subject"
         android:id="@+id/tvSub"
-        android:layout_alignParentTop="true"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:padding="20dp"
-        android:background="@color/colorAppBar"
-        android:textSize="15dp" />
+        android:layout_below="@+id/TVSubjectYear"
+        android:gravity="right"
+        android:paddingLeft="5dp"
+        android:paddingTop="15dp"
+        android:text="@string/selectSubject"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="12dp" />
+
+    <Spinner
+        android:id="@+id/spYear"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvYear"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvSub"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toEndOf="@+id/tvSub"
+        android:layout_toRightOf="@+id/tvSub"
+        android:gravity="left"
+        android:paddingRight="5dp"
+        android:textAlignment="gravity"
+        android:textSize="5sp" />
+
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Year"
         android:id="@+id/tvYear"
-        android:layout_alignParentTop="true"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/tvSub"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:padding="20dp"
-        android:background="@color/colorAppBar"
-        android:textSize="15dp" />
+        android:layout_alignRight="@+id/tvSub"
+        android:layout_below="@+id/tvSub"
+        android:gravity="right"
+        android:paddingLeft="5dp"
+        android:paddingTop="15dp"
+        android:text="@string/selectYear"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="12dp" />
 </RelativeLayout>

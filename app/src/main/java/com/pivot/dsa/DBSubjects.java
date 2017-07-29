@@ -14,13 +14,11 @@ import org.json.JSONObject;
  * Created by shanthan on 3/2/2016.
  */
 public class DBSubjects {
+    public static String SUB_NAME = "sub_name";
     Context context;
     private String SUBJECTS_TB = "subjects";
     private String UID = "_id";
     private String ID = "id";
-
-
-    private String SUB_NAME = "sub_name";
     private String LEVEL = "sub_level";
     /* private String CREATE_SUB_TABLE = "create table " + SUBJECTS_TB + " (" + UID +
             " integer primary key," + SUB_NAME +
